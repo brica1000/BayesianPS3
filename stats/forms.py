@@ -1,0 +1,16 @@
+from django import forms
+from django.contrib.auth.models import User
+
+from .models import Code
+
+
+
+class StatsInputForm(forms.ModelForm):
+
+    class Meta:
+        model = Code
+        fields = ('title',)
+        widgets = {
+            'title': forms.fields.TextInput(attrs={'size':'40',}),
+            #'text': forms.fields.TextInput(attrs={'placeholder': "Enter 'one', 'two', or something else"})
+        }

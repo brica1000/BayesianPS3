@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <title>Fresh n' Warm</title>
+</head>
+
+<body>
+  <div class=container>
+    <ul class="nav nav-pills">
+      <li role="presentation" class="active"><a href="{% url 'index' %}">A bit about Bayesian</a></li>
+      <li role="presentation"><a href="{% url 'edit_code' %}">Prior sensitivity analysis</a></li>
+      <li role="presentation"><a href="{% url 'edit_gibbs' %}">A simple Gibbs sampler</a></li>
+    </ul>
+
+    <div class=container>
+    {% block content %}
+    {% endblock %}
+    </div>
+
+  </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/js/drop_down.js"></script>
+<script src="/static/js/slide.js"></script>
+
+
+</body>
+</html>

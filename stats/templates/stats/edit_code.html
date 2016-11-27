@@ -1,0 +1,22 @@
+{% extends 'stats/index.html' %}
+
+{% block content %}
+
+  <div class=container>
+    <h1>Prior sensitivity</h1>
+    <form method="POST" class="form-horizontal">
+      {% csrf_token %}
+      <div class="form-group">
+          <p>Enter your prior on beta as a vector</p>
+          {{ form.title }}
+      </div>
+      <div class="form-group">
+          {{ form.text }}
+      </div>
+      <div class="form-group">
+          <button type="submit" class="save btn btn-default">Save</button>
+      </div>
+    </form>
+  </div>
+
+{% endblock %}
