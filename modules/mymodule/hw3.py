@@ -112,7 +112,7 @@ def monte(p=.5, N=1000, data=(0,0)): # Enter data as (x,y)
     if data != (0,0):
         z,q = data
         fig.circle(z,q, color='red')
-    show(fig)
+    return fig
 
 
 def gibbs(iterr1=1000, iterr2=1000, p=.5):
@@ -122,8 +122,8 @@ def gibbs(iterr1=1000, iterr2=1000, p=.5):
     for i in range(iterr1):
         y.append(np.random.normal(loc=p*x[-1],scale=math.sqrt(1-p**2)))
         x.append(np.random.normal(loc=p*y[-1],scale=math.sqrt(1-p**2)))
-    monte(p=p, N=iterr2, data = (x,y))
-    return (x,y)
+    fig = monte(p=p, N=iterr2, data = (x,y))
+    return fig
 
 
 

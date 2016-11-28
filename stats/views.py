@@ -8,6 +8,12 @@ from .forms import StatsInputForm
 
 from modules.mymodule import hw,hw3
 
+from bokeh.embed import components
+from bokeh.plotting import figure
+from bokeh.resources import CDN
+
+
+
 
 def index(request):
     return render(request, 'stats/index.html', {})
@@ -51,8 +57,8 @@ def gibbs_results(request):
     results = Code.objects.all()
     (p, iterr1, iterr2) = eval(results[len(results)-1].title) # Inputs
     if len((p, iterr1, iterr2)) == 3:
-        hw3.gibbs(p=p, iterr1=iterr1, iterr2=iterr2)
-        output = 'Wooo!'
-        return render(request, 'stats/gibbs_results.html', {'output': output,})
+        plot = hw3.gibbs(p=p, iterr1=iterr1, iterr2=iterr2)
+        script, div = components(plot, CDN)
+        return render(request, 'stats/gibbs_results.html', {'script':script,'div':div,})
     else:
         return HttpResponseRedirect(reverse('edit_gibbs'))
