@@ -25,7 +25,7 @@ SECRET_KEY = 'cyhcf$hp#s3kibaj(dvn%+1b#)(o0@g6ajyut$y0^$moton3pp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 'brica999.pythonanywhere.com' ]
 
 
 # Application definition
