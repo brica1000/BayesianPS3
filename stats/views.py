@@ -34,10 +34,10 @@ def results(request):
     results = Code.objects.all()
     x = eval(results[len(results)-1].title) # Input the last title as out beta_not
     if len(x) == 5:
-        hw3.process(beta_not = np.transpose(x))
+        plots = hw3.process(beta_not = np.transpose(x))
         priors = x
-        output = 'Wooo!'
-        return render(request, 'stats/results.html', {'priors': priors, 'output': output})
+        script, div = components(plots, CDN)
+        return render(request, 'stats/results.html', {'script':script,'div':div,'priors':priors})
     else:
         return HttpResponseRedirect(reverse('edit_code'))
 

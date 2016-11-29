@@ -1,11 +1,23 @@
-{% extends 'stats/index.html' %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Bokeh Scatter Plots</title>
+
+        <link rel="stylesheet" href="http://cdn.pydata.org/bokeh/release/bokeh-0.12.3.min.css" type="text/css" />
+        <script type="text/javascript" src="http://cdn.pydata.org/bokeh/release/bokeh-0.12.3.min.js"></script>
+
+        {% autoescape off %}
+        {{ script }}
+        {% endautoescape %}
 
 
-<p> {{ output }} </p>
-<p> {{ results }} </p>
+    </head>
+    <body>
+      <h3> Our beliefs are {{ priors }} </h3>
 
-
-
-
-{% endblock %}
+      {% autoescape off %}
+      {{ div }}
+      {% endautoescape %}
+    </body>
+</html>

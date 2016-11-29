@@ -81,12 +81,14 @@ def process(beta_not = np.transpose([0,10,5000,10000,10000])):
         for b,v,graph_title in zip(beta_bar,v_beta.diagonal(),graph_titles):
             post_b = norm.rvs(size = 1000, loc=b, scale = math.sqrt(v))
             post_b = pd.Series(post_b)
-            post_b.plot.kde()            # graph = figure(title=graph_title, x_axis_label='posterior beta', y_axis_label='density')
+            post_b.plot.kde()
+            plt.title("Posterior density of " + str(graph_title))
             graph = mpl.to_bokeh()
             graphs.append(graph)
-        show(column(graphs))
+        return graphs
 
-    plot_betas()
+    graphs = plot_betas()
+    return graphs
 
 
 
