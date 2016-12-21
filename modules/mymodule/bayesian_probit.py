@@ -23,7 +23,7 @@ from bokeh.io import show
 
 """
 The Data
-"""
+
 X1=norm.rvs(size=100)
 X2=norm.rvs(size=100)
 X=np.column_stack((X1,X2))
@@ -38,6 +38,7 @@ for entry in latent_y:
     else:
         y.append(0)
 y=pd.Series(y)
+"""
 
 """
 Make draws from NG(beta_bar,V_bar,s_min_sq,v_bar), so we need
@@ -92,14 +93,7 @@ def gibbs(X,y,iterrs=500,burn=100):
     (b0,b1) = posterior_draw.loc[burn:iterrs].mean()
     return (b0,b1, y_stars, posterior_draw)
 
-""" Test things """
-(b0,b1,y_stars, post) = gibbs(X,y,10000, burn=5000)
-(b0,b1)
-autocorrelation_plot(post)
-post.plot()
-pd.Series(y_stars.iloc[9999]).plot.kde()
-plt.show()
-plt.clf()
+
 
 """Use in production function"""
 def full_gibbs(X, y, iterrs=500, burn=100):

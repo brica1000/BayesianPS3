@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 import numpy as np
+import pandas as pd
 
 from .models import Code
 from .forms import StatsInputForm
@@ -12,6 +13,7 @@ from bokeh.embed import components
 from bokeh.plotting import figure
 from bokeh.resources import CDN
 
+from scipy.stats import norm
 
 
 
