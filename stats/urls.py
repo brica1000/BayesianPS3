@@ -10,5 +10,7 @@ urlpatterns = [
     url(r'^results/', views.results, name='results'),
     url(r'^edit_gibbs/', views.edit_gibbs, name='edit_gibbs'),
     url(r'^gibbs_results/', views.gibbs_results, name='gibbs_results'),
+    url(r'^probit_input/', views.probit_input, name='probit_input'),
+    url(r'^probit_results/', views.probit_results, name='probit_results'),
 
     ]
