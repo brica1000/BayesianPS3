@@ -1,14 +1,12 @@
 {% extends 'stats/index.html' %}
-
 {% block content %}
+
+<!-- Why don't we need a script here?-->
+
     <h1>Convergence</h1>
     <p>
-
-
     </p>
-
  <!-- Wrong but shouldn't matter-->
- 
     <form method="POST" class="form-horizontal">
       {% csrf_token %}
       <div class="form-group">
@@ -22,4 +20,10 @@
           <button type="submit" class="save btn btn-default">Save</button>
       </div>
     </form>
+
+    {% autoescape off %}
+    {{ div }}
+    {% endautoescape %}
+
+
 {% endblock %}

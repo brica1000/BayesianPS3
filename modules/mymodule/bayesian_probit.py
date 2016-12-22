@@ -54,7 +54,7 @@ def create_data():
         else:
             y.append(0)
     y=pd.Series(y)
-    return (X,y)
+    return (X,y,latent_y)
 
 
 """
@@ -132,6 +132,22 @@ def full_gibbs(X, y, iterrs=500, burn=100):
         graphs.append(graph)
     return graphs
 
+
+
+
+def back_ground(X,y):
+    N = len(y)
+    x = X[1]
+    radii = X[0] * .2
+    colors = [
+        "#%02x%02x%02x" % (int(r), int(g), 150) for r, g in zip(150+80*x, 30+80*y)
+    ]
+    TOOLS="resize,crosshair,pan,wheel_zoom,box_zoom,reset,box_select,lasso_select"
+    # create a new plot with the tools above, and explicit ranges
+    p = figure(tools=TOOLS, x_range=(-2,2), y_range=(-20,20))
+    # add a circle renderer with vectorized colors and sizes
+    p.circle(x,y, radius=radii, fill_color=colors, fill_alpha=0.6, line_color=None)
+    return p
 
 
 

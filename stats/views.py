@@ -18,7 +18,10 @@ from scipy.stats import norm
 
 
 def index(request):
-    return render(request, 'stats/index.html', {})
+    (X,y,latent_y) = bayesian_probit.create_data()
+    p = bayesian_probit.back_ground(X,latent_y)
+    script, div = components(p, CDN)
+    return render(request, 'stats/index.html', {'script':script,'div':div})
 
 
 def edit_code(request):
@@ -71,13 +74,17 @@ def probit_input(request):
         if form.is_valid():
             result = form.save(commit=False)
             result.save()
-            return HttpResponseRedirect(reverse('probit_results'))
+            (X,y,latent_y) = bayesian_probit.create_data()
+            plots = bayesian_probit.full_gibbs(X,y)
+            script, div = components(plots, CDN)
+            return render(request, 'stats/probit_input.html', {'form': form,'script':script,'div':div,})
+            # return HttpResponseRedirect(reverse('probit_results'))
     else:
         form = StatsInputForm(initial={'title': '(.5, 1000, 1000)'})
-    return render(request, 'stats/probit_input.html', {'form': form})
+    return render(request, 'stats/probit_input.html', {'form': form,})
 
 def probit_results(request):
-    (X,y) = bayesian_probit.create_data()
+    (X,y,latent_y) = bayesian_probit.create_data()
     plots = bayesian_probit.full_gibbs(X,y)
     script, div = components(plots, CDN)
     return render(request, 'stats/results.html', {'script':script,'div':div})
