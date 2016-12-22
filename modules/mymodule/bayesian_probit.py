@@ -39,6 +39,23 @@ for entry in latent_y:
         y.append(0)
 y=pd.Series(y)
 """
+def create_data():
+    X1=norm.rvs(size=100)
+    X2=norm.rvs(size=100)
+    X=np.column_stack((X1,X2))
+    X=pd.DataFrame(X)
+    eps=norm.rvs(size=100)
+    latent_y = 3*X1 + 10*X2 + eps
+    y = []
+    i = range(100)
+    for entry in latent_y:
+        if entry > 0:
+            y.append(1)
+        else:
+            y.append(0)
+    y=pd.Series(y)
+    return (X,y)
+
 
 """
 Make draws from NG(beta_bar,V_bar,s_min_sq,v_bar), so we need

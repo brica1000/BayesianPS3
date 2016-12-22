@@ -77,22 +77,7 @@ def probit_input(request):
     return render(request, 'stats/probit_input.html', {'form': form})
 
 def probit_results(request):
-    # results = Code.objects.all()
-    # x = eval(results[len(results)-1].title) # Input the last title as out beta_not
-    X1=norm.rvs(size=100)
-    X2=norm.rvs(size=100)
-    X=np.column_stack((X1,X2))
-    X=pd.DataFrame(X)
-    eps=norm.rvs(size=100)
-    latent_y = 3*X1 + 10*X2 + eps
-    y = []
-    i = range(100)
-    for entry in latent_y:
-        if entry > 0:
-            y.append(1)
-        else:
-            y.append(0)
-    y=pd.Series(y)
+    (X,y) = bayesian_probit.create_data()
     plots = bayesian_probit.full_gibbs(X,y)
     script, div = components(plots, CDN)
     return render(request, 'stats/results.html', {'script':script,'div':div})
