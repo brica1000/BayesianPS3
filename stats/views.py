@@ -75,16 +75,24 @@ def probit_input(request):
             result = form.save(commit=False)
             result.save()
             (X,y,latent_y) = bayesian_probit.create_data()
-            plots = bayesian_probit.full_gibbs(X,y)
+            plots = bayesian_probit.full_gibbs(X,y,iterrs=200)
             script, div = components(plots, CDN)
-            return render(request, 'stats/probit_input.html', {'form': form,'script':script,'div':div,})
-            # return HttpResponseRedirect(reverse('probit_results'))
+            return render(request, 'stats/probit_input.html', {'form':form,'script':script,'div':div,})
     else:
-        form = StatsInputForm(initial={'title': '(.5, 1000, 1000)'})
-    return render(request, 'stats/probit_input.html', {'form': form,})
+        form = StatsInputForm(initial={'title': 'Who cares, hit enter'})
+    return render(request, 'stats/probit_input.html', {'form':form,})
 
-def probit_results(request):
-    (X,y,latent_y) = bayesian_probit.create_data()
-    plots = bayesian_probit.full_gibbs(X,y)
-    script, div = components(plots, CDN)
-    return render(request, 'stats/results.html', {'script':script,'div':div})
+def sensitivity(request):
+    if request.method == "POST":
+        form = StatsInputForm(request.POST)
+        if form.is_valid():
+            result = form.save(commit=False)
+            result.save()
+            inputs = Code.objects.all()  # We can be more clever
+            (list_of_priors, iterrs) = eval(inputs[len(inputs)-1].title) # Inputs
+            plots = bayesian_probit.prior_sens(list_of_priors, iterrs=iterrs)
+            script, div = components(plots, CDN)
+            return render(request, 'stats/sensitivity.html', {'form':form,'script':script,'div':div,})
+    else:
+        form = StatsInputForm(initial={'title': '[[1,1],[5,5],[10,10],[20,20]], 200'})
+    return render(request, 'stats/sensitivity.html', {'form':form,})

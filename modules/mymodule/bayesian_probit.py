@@ -12,6 +12,9 @@ import pandas as pd
 import math
 import statsmodels.api as sm
 
+from matplotlib import cm
+from numpy import linspace
+
 from pandas.tools.plotting import autocorrelation_plot
 
 from bokeh import mpl
@@ -19,6 +22,7 @@ from bokeh.plotting import figure, output_file
 from bokeh.models import Label
 from bokeh.layouts import column
 from bokeh.io import show
+
 
 
 """
@@ -94,12 +98,12 @@ def y_star_draw(beta,y,X,y_star_prev):
                 y_star.append(j)
     return y_star
 
-def gibbs(X,y,iterrs=500,burn=100):
+def gibbs(X,y,iterrs=500,burn=100, beta_not=[3,10]):
     y_star = pd.Series(norm.rvs(size=len(y)))  # Initial y_star
     betas = []
     y_stars = []
     for i in range(iterrs):
-        (beta_bar, V_bar_inv) = constants (X,y_star,beta_not=[3,10])
+        (beta_bar, V_bar_inv) = constants (X,y_star,beta_not=beta_not)
         (beta_draw)=NG_draw(beta_bar, V_bar_inv)
         new_y_star = y_star_draw(beta_draw,y,X,y_star)
         y_star = new_y_star
@@ -133,6 +137,29 @@ def full_gibbs(X, y, iterrs=500, burn=100):
     return graphs
 
 
+def prior_sens(list_of_priors, iterrs=500, burn=100):
+    colors = [ cm.viridis(x) for x in linspace(0, 1, len(list_of_priors)) ]
+    (X,y,latent_y) = create_data()
+    for prior,color in zip(list_of_priors,colors):
+        (b0,b1, y_stars, posterior_draws) = gibbs(X,y,iterrs=iterrs,burn=burn, beta_not=prior)
+        for beta, i in zip(posterior_draws,range(len(prior))):
+            plt.figure(i+1)
+            posterior_draws[beta][burn:iterrs-1].plot.kde(c=color)
+            plt.title("Posterior density of " + str(beta))
+    plots = []
+    for i in range(len(list_of_priors[0])):  # We cant send to bokehsooner, we arent done with the graph
+        plt.figure(i+1)
+        plot = mpl.to_bokeh()
+        plots.append(plot)
+    return plots
+
+
+
+
+
+
+
+
 
 
 def back_ground(X,y):
@@ -148,14 +175,6 @@ def back_ground(X,y):
     # add a circle renderer with vectorized colors and sizes
     p.circle(x,y, radius=radii, fill_color=colors, fill_alpha=0.6, line_color=None)
     return p
-
-
-
-
-
-
-
-
 
 
 
