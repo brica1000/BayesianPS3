@@ -7,6 +7,10 @@
     {% csrf_token %}
     <div class="form-group">
         <p>Enter a list of priors and the number of itterations, for example [ [10,10], [2,2], ... ], iterrs=200 </p>
+        <ul>
+          <li>This won't work if the input is not in the above form.</li>
+          <li>However, feel free to extend the list of priors to see how they affect our analysis.</li>
+        </ul>
         {{ form.title }}
     </div>
     <div class="form-group">

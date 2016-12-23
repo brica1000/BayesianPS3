@@ -68,6 +68,10 @@ def gibbs_results(request):
     else:
         return HttpResponseRedirect(reverse('edit_gibbs'))
 
+def probit(request):
+    return render(request, 'stats/probit.html', {})
+
+
 def probit_input(request):
     if request.method == "POST":
         form = StatsInputForm(request.POST)
@@ -79,7 +83,7 @@ def probit_input(request):
             script, div = components(plots, CDN)
             return render(request, 'stats/probit_input.html', {'form':form,'script':script,'div':div,})
     else:
-        form = StatsInputForm(initial={'title': 'Who cares, hit enter'})
+        form = StatsInputForm(initial={'title': "Doesn't matter yet, hit submit!"})
     return render(request, 'stats/probit_input.html', {'form':form,})
 
 def sensitivity(request):
@@ -94,5 +98,5 @@ def sensitivity(request):
             script, div = components(plots, CDN)
             return render(request, 'stats/sensitivity.html', {'form':form,'script':script,'div':div,})
     else:
-        form = StatsInputForm(initial={'title': '[[1,1],[5,5],[10,10],[20,20]], 200'})
+        form = StatsInputForm(initial={'title': '[ [1,1], [5,5], [10,10], [20,20] ],  200'})
     return render(request, 'stats/sensitivity.html', {'form':form,})
