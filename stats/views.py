@@ -100,3 +100,17 @@ def sensitivity(request):
     else:
         form = StatsInputForm(initial={'title': '[ [1,1], [5,5], [10,10], [20,20] ],  200'})
     return render(request, 'stats/sensitivity.html', {'form':form,})
+
+def actual(request):
+    if request.method == "POST":
+        form = StatsInputForm(request.POST)
+        if form.is_valid():
+            result = form.save(commit=False)
+            result.save()
+            (X,y) = bayesian_probit.load_data()
+            plots = bayesian_probit.full_gibbs(X,y,iterrs=200,burn=100,beta_not=[0,0,0,0,0],var_beta=[200,200,200,200,200])
+            script, div = components(plots, CDN)
+            return render(request, 'stats/actual.html', {'form':form,'script':script,'div':div,})
+    else:
+        form = StatsInputForm(initial={'title': "Doesn't matter yet, hit submit!"})
+    return render(request, 'stats/probit_input.html', {'form':form,})

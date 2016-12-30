@@ -1,12 +1,62 @@
 {% extends 'stats/index.html' %}
 {% block content %}
 
-<div>
-    <h3><a href="{% url 'probit_input' %}">The algorithm</a></h3>
+<div class="paper-section">
+  <p> Please note, this is a work in progress, and hence not as polished as I would like. </p>
+  <h3>I. Introduction</h3>
+    <p class="paper-text">
+      This project was born out of a curiousity about people's experience using <a href="https://www.couchsurfing.com">CouchSurfing.com</a>, a platform for meeting people.
+      As the internet and social media play an ever-growing role in our lives, it important to understand how these interactions are playing out;
+      my childhood was filled with warnings about the lurking dangers online, yet, more and more of us are turning to the internet for every service imaginable.
+      I would like to use people's experiences on CouchSurfing to see what we can learn about how things are going as we bring our lives on and offline.
+      <br>
+      <br>
+      The plan is to write a program to scrape some simple data from the all hosts in a particular city (from all those who are active), I choose Helsinki to start with,
+      and then try and answer the simple question, which factors make it more likely that someone will have a bad experience.
+      In answering this question, I have elected to do my analysis within a Bayesian framework based on a linear probit model.
+      The rest of the paper will proceed as follows; section II. will outline the data set and how it was collected,
+      in III. I will go into the details and theory of the algorithm used, in IV. I will present my results, and finally in section
+      V. one can find my sources as well as links to my code.
+      <br>
+      <br>
+      As one final note, doubtless the reader has noticed that this paper is presented online - this is for two reasons,
+      one, it was simply fun to put it online, and two, it allows the reader to interact with my code
+      and generate their own graphs.  This is a highly desirable trait within the Bayesian framework, as well as
+      in any research because I believe it enhances the ease
+      with which one could replicate my inquiry.  Our scientific community has a
+      dreadful track record of publishing
+      results that are not replicable.
+    </p>
+</div>
+
+<div class="paper-section">
+    <h3>II. The Data</h3>
+      <p class="paper-text">
+
+      </p>
 
 </div>
 
-<div>
-    <h3><a href="{% url 'sensitivity' %}">Let's look at some prior sensitivity analysis</a></h3>
+<div class="paper-section">
+    <h3>III. The Algorithm</h3>
+      <p class="paper-text">
+        Now we will delve into the theory behind my analysis.
+      </p>
+    <h3 class="paper-text"><a href="{% url 'probit_input' %}">The algorithm</a></h3>
+</div>
+
+<div class="paper-section">
+    <h3>IV. Results</h3>
+      <p class="paper-text">
+      </p>
+    <h3 class="paper-text"><a href="{% url 'sensitivity' %}">Let's look at some prior sensitivity analysis</a></h3>
+    <br>
+    <h3 class="paper-text"><a href="{% url 'actual' %}">And now the actual data</a></h3>
+</div>
+
+<div class="paper-section">
+  <h3>V. Appendix</h3>
+
+
 </div>
 {% endblock %}

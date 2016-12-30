@@ -60,6 +60,29 @@ def create_data():
     y=pd.Series(y)
     return (X,y,latent_y)
 
+# Real data
+def load_data():
+    # Load and format the data
+    df = pd.read_csv('data_try_2.csv')
+    df['member_years'] = pd.to_numeric(df['member_since'].str[2:6]).apply(lambda x: 2017-x)
+    male = []
+    for entry in df.sex:
+        if entry == 'Male':
+            male.append(1)
+        else:
+            male.append(0)
+    df['male'] = pd.Series(male)
+    df['age_num'] = pd.to_numeric(df.age.str[2:4])
+    df = df[df.profile_len != 'flag'] # Remove the entries with no profile_len
+    df = df[df.sex != 'other'] # Drop the other sex, it confounds
+    df['profile_len'] = pd.to_numeric(df.profile_len)
+    df = df.dropna()    # One final clean
+    df.index = range(len(df)) # We have screwed up our index
+    X = df[['age_num', 'profile_len', 'member_years', 'male']]
+    y = df.good
+    X = sm.add_constant(X)
+    return X,y
+
 
 """
 Make draws from NG(beta_bar,V_bar,s_min_sq,v_bar), so we need
@@ -98,12 +121,12 @@ def y_star_draw(beta,y,X,y_star_prev):
                 y_star.append(j)
     return y_star
 
-def gibbs(X,y,iterrs=500,burn=100, beta_not=[3,10]):
+def gibbs(X,y,iterrs=500,burn=100, beta_not = [1,1], var_beta = [1,1]):
     y_star = pd.Series(norm.rvs(size=len(y)))  # Initial y_star
     betas = []
     y_stars = []
     for i in range(iterrs):
-        (beta_bar, V_bar_inv) = constants (X,y_star,beta_not=beta_not)
+        (beta_bar, V_bar_inv) = constants (X,y_star,beta_not=beta_not, var_beta=var_beta)
         (beta_draw)=NG_draw(beta_bar, V_bar_inv)
         new_y_star = y_star_draw(beta_draw,y,X,y_star)
         y_star = new_y_star
@@ -111,15 +134,15 @@ def gibbs(X,y,iterrs=500,burn=100, beta_not=[3,10]):
         y_stars.append(y_star)
     posterior_draw = pd.DataFrame(betas)
     y_stars = pd.Series(y_stars)
-    (b0,b1) = posterior_draw.loc[burn:iterrs].mean()
-    return (b0,b1, y_stars, posterior_draw)
+    betas = posterior_draw.loc[burn:iterrs].mean()
+    return (betas, y_stars, posterior_draw)
 
 
 
 """Use in production function"""
-def full_gibbs(X, y, iterrs=500, burn=100):
+def full_gibbs(X, y, iterrs=500, burn=100, beta_not = [1,1], var_beta = [1,1]):
     graphs = []
-    (b0,b1, y_stars, posterior_draws) = gibbs(X,y,iterrs=iterrs,burn=burn)
+    (betas, y_stars, posterior_draws) = gibbs(X,y,iterrs=iterrs,burn=burn, beta_not=beta_not, var_beta=var_beta)
     # Convergence information
     posterior_ts = posterior_draws.plot()
     posterior_ts = mpl.to_bokeh()
