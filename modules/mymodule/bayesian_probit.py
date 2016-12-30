@@ -164,7 +164,7 @@ def prior_sens(list_of_priors, iterrs=500, burn=100):
     colors = [ cm.viridis(x) for x in linspace(0, 1, len(list_of_priors)) ]
     (X,y,latent_y) = create_data()
     for prior,color in zip(list_of_priors,colors):
-        (b0,b1, y_stars, posterior_draws) = gibbs(X,y,iterrs=iterrs,burn=burn, beta_not=prior)
+        (betas, y_stars, posterior_draws) = gibbs(X,y,iterrs=iterrs,burn=burn, beta_not=prior)
         for beta, i in zip(posterior_draws,range(len(prior))):
             plt.figure(i+1)
             posterior_draws[beta][burn:iterrs-1].plot.kde(c=color)
