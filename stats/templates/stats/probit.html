@@ -2,21 +2,32 @@
 {% block content %}
 
 <div class="paper-section">
-  <p> Please note, this is a work in progress, and hence not as polished as I would like. </p>
+  <p>
+    Please note, this is a work in progress.  That means
+    some features and thoughts are incomplete and I am saving
+    spell check for last.  Before Jan 16th, things will look much better.
+  </p>
   <h3>I. Introduction</h3>
     <p class="paper-text">
-      This project was born out of a curiousity about people's experience using <a href="https://www.couchsurfing.com">CouchSurfing.com</a>, a platform for meeting people.
+      This project was born out of a curiousity about people's experience using <a target="_blank" href="https://www.couchsurfing.com">CouchSurfing.com</a>, a platform for meeting people.
       As the internet and social media play an ever-growing role in our lives, it important to understand how these interactions are playing out;
       my childhood was filled with warnings about the lurking dangers online, yet, more and more of us are turning to the internet for every service imaginable.
-      I would like to use people's experiences on CouchSurfing to see what we can learn about how things are going as we bring our lives on and offline.
+      I would like to use people's experiences on CouchSurfing to see what we can learn about how things are going as we increasingly
+      mix our on and offline lives.
       <br>
       <br>
-      The plan is to write a program to scrape some simple data from the all hosts in a particular city (from all those who are active), I choose Helsinki to start with,
-      and then try and answer the simple question, which factors make it more likely that someone will have a bad experience.
-      In answering this question, I have elected to do my analysis within a Bayesian framework based on a linear probit model.
-      The rest of the paper will proceed as follows; section II. will outline the data set and how it was collected,
-      in III. I will go into the details and theory of the algorithm used, in IV. I will present my results, and finally in section
-      V. one can find my sources as well as links to my code.
+      The plan is to write a program to scrape some simple data from the all hosts in a
+      particular city (at least all those who are active), I choose Helsinki to start with,
+      and then try and answer the simple question - which factors make it more likely that
+      someone will have a bad experience?
+      In answering this question, I have elected to do my analysis within the Bayesian
+      framework based on a linear probit model.
+      The rest of the paper will proceed as follows; section II. will outline the
+      data set and how it was collected,
+      in III. I will go into the details and theory of the model and algorithm used,
+      in IV. I will present my results, which will be discussed in
+      V.  Finally in section
+      VI. one can find my sources as well as links to my code.
       <br>
       <br>
       As one final note, doubtless the reader has noticed that this paper is presented online - this is for two reasons,
@@ -32,31 +43,171 @@
 <div class="paper-section">
     <h3>II. The Data</h3>
       <p class="paper-text">
-
+        The data set that I created is only modest start on the path to understanding the interactions
+        born from online networks, however, it should serve to illustrate our procedure.  To collect
+        the data was
+         as simple as going through every host listed in a particular city
+        and recording information such as age, sex, location, how long they have been a memeber, how long
+        their profile is and other such measures easily available.  As this would be rather tedious to complete
+        by hand, I wrote a program, which has the great advantage that it is simple to gather more, or to
+        extend to create more refined data sets.  For a start, I will
+        analyze hosts in Helsinki.  I have selected age, sex, how long a user has been a member,
+        and profile length for my data matrix X.  The dependent variable is a binary outcome
+        that is 1 if aa users profile has no neutral/negative reviews, and 0 if there are one or more.  After
+        my analysis, I also compare my results to those based on data from Stockholm and
+        Saint Petersburg.  But before moving on to the procedure, let me go over several caveats related to
+        my data set,
+        some practical, and one ethical.
+        <br>
+        <br>
+        First, web-scraping is fiendishly finicky.  When the HTML isn't consistent or gets changed, the
+        whole sections of the program must be debugged and rewritten.  Thankfully, during the time I have been working
+        on this program as a hobby, this hasn't been a problem.  But, there are still some users
+        split through the cracks so to speak.  For whatever reason,
+        their profiles have strange and unique HTML.  However I see no reason to think that this poses a
+        statical threat,
+        only that we have dropped random observations.
+        <br>
+        <br>
+        Also, CouchSurfing groups hosts by city, but the profile of a user in any given city will contain
+        information about experiences in many other places in addition to that city.  However, it is
+        quite a task to filter and sort experiences by city, although this would of course be interesting.
+        For our task, to answer our question, we will not be able to say exactly how geography
+        influences things, as we have collected our sample in a manner that only roughly represent the
+        geographical location from which it was collected.
+        <br>
+        <br>
+        I don't wish to delve into my findings here, but it must be pointed out that there
+        are very few negative experiences.  This is wonderful.  But from a statistical standpoint,
+        a bit of a complication; we must ensure that we have enough observations.  In my data set from Helsinki
+        there were just over 50 negative or neutral experiences.  As a check, I have collected the entire reviews from
+        these interactions, and once again, wonderfully, they are duller than one would expect.  However,
+        this further shrinks our sample of negative experiences.  For example, people often make as negative something
+        to the effect of, "Joe was super nice, thanks."  By including these seemingly innocuous reviews as
+        negative experiences I am making the implicit asumption that, on average, people
+        purposefully marked the review
+        as negative and for whatever reason didn't elaborate.
+        <br>
+        <br>
+        Furthermore, one might wish to be
+        careful about seperating hosts from surfers.  This is another dimension that for our purpose
+        if a needless complication; I believe we have sufficient
+        information to make a start.
+        <br>
+        <br>
+        Also, I would like to assure reader that I have scoured the terms and conditions of CouchSurfing and
+        am certain our inquiry into safety is anything but a violation.  In fact, the amount of
+        wonderful experiences and very very few negative is a confirmation to the genius of
+        the idea.  That being said,
+        I will not post my web-scraper directly, mostly becuase it is not production ready so to speak;
+        it could well break if CouchSurfing changes any small bit of HTML.  However, I would be happy
+        to help anyone with a worthy cause who would like to tap into the wealth of information available online.
+        We live in an amazing, and not a small bit frightening, time when so much information is
+        available to those who know how to collect and manipulate it.
       </p>
 
 </div>
 
 <div class="paper-section">
-    <h3>III. The Algorithm</h3>
+    <h3>III. The Model and Algorithm</h3>
       <p class="paper-text">
-        Now we will delve into the theory behind my analysis.
+        To understand the factors that affect whether or not one is likely to have a good
+        experience on CoushSurfing, one really only needs a binary classification method.
+        There are many to choose from, and most have their analogous variant within the Bayesian
+        framework.  As a logical place to start, that is, with as few assumptions as possible,
+        it would be ideal to fit a linear model.  We can do this quite elegantly by augmenting our
+        data set using a Gibbs sampler.  Then, the rest is simply collecting our posterior
+        draws to learn about their distribution and following up by checking how sensitive
+        this is to our prior assumptions.
+        <br>
+        <br>
+        We could of course fit a linear model without fuss, however, there is the not-insurmountable
+        problem that our dependent variable is binary, hence we would like our model to provide point estimates
+        of 1 or 0, as opposed to -.02 when predictings 'good experience'.  Suppose for a moment that we were
+        not predicting yes or no, but rather some linear variable with a cutoff that values above which
+        correspond to 1, and to 0 for below.  Such a variable, in a more general context, correspond
+        to the utility of a decision.  Specifically, in our context, it is rather odd
+        to speak of the utility of choosing to have a good experience, but this only says that
+        there are situation, i.e. user profiles, that make it more or less likely that everyone
+        will have a nice time.  Accepting this latent variable, we could then follow the standard Bayesian procedures
+        and calculate our posteriors from known distributions.  But we are not given this continuous variable.
+        We must infer it by continuous updating based on repeated sampling within a Gibbs sampler.  Allow
+        me to elaborate on the procedure outlined in Koopman.<sup>1</sup>
+        <br><br>
+        Based on our assumptions and standard Bayesian theory, we know the distribution for our dependent
+        and continous variable, given that we know the parameters, &beta;; it is normal.
+        <br><br>
+      </p>
+      <div>
+          <div class="equation">
+            p(y* | y, &beta;, h)
+          </div>
+          <div class="equation-number">
+            ( 3.1 )
+          </div>
+      </div>
+      <br><br>
+      <p class="paper-text">
+          But the distribution of these parameters
+        depends on our dependent variable; and indeed there is a way our of this circular impossibility.
+        Suppose we are given a guess for an intitial value for our continuous variable, call it y*, then
+        we could easily calculate
+        the distribution of our posteriors based on this.  But now that we know our posterior parameters,
+        we can make a best guess at a new value for y*.  Then we make a new guess at values for our parameters,
+        and so on.  This process is a convergent markov chain, and after sufficiently many simulations, we
+        will have a stable distribution for our posteriors as well as y*.
+        <br>
+        <br>
+        Let me delve into some detail about how we can calculate these.
+        <br>
+        <br>
+        Below is sample output with generated data based on the relationship
+        Y = 3X + 10Z + &epsilon;.  One can also follow the link to change certain
+        parameters and explore their effect on our sampler and its convergence to the posterior.
       </p>
     <h3 class="paper-text"><a href="{% url 'probit_input' %}">The algorithm</a></h3>
+    <h3 class="paper-text"><a href="{% url 'sensitivity' %}">Sensitivity analysis</a></h3>
 </div>
 
 <div class="paper-section">
     <h3>IV. Results</h3>
       <p class="paper-text">
+
+
+
+        How influential are our priors?
       </p>
-    <h3 class="paper-text"><a href="{% url 'sensitivity' %}">Let's look at some prior sensitivity analysis</a></h3>
+    <h3 class="paper-text"><a href="{% url 'sensitivity' %}">Sensitivity analysis</a></h3>
     <br>
+    <p class="paper-text">
+    </p>
     <h3 class="paper-text"><a href="{% url 'actual' %}">And now the actual data</a></h3>
 </div>
 
 <div class="paper-section">
-  <h3>V. Appendix</h3>
+    <h3>V. Conclusions</h3>
+      <p class="paper-text">
+
+      </p>
+
+</div>
+
+<div class="paper-section">
+  <h3>VI. Appendix</h3>
+    <div class="paper-text">
+        <h5>References</h5>
+          <ol>
+            <li>1. Koopman</li>
+            <li></li>
+          </ol>
+        <h5>Source Code</h5>
+          <p>
+            My algorithms and data can all be found
+            at my page on <a href="https://github.com/brica1000https://github.com/brica1000">GitHub</a>,
+            under the elequent title of 'BayesianPS3'.
+          </p>
 
 
+    </div>
 </div>
 {% endblock %}

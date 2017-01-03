@@ -63,7 +63,7 @@ def create_data():
 # Real data
 def load_data():
     # Load and format the data
-    df = pd.read_csv('data_try_2.csv')
+    df = pd.read_csv('/mysite/data_try_2.csv')
     df['member_years'] = pd.to_numeric(df['member_since'].str[2:6]).apply(lambda x: 2017-x)
     male = []
     for entry in df.sex:
