@@ -79,7 +79,7 @@ def probit_input(request):
             result = form.save(commit=False)
             result.save()
             (X,y,latent_y) = bayesian_probit.create_data()
-            plots = bayesian_probit.full_gibbs(X,y,iterrs=200)
+            plots = bayesian_probit.full_gibbs(X,y,iterrs=200, beta_not=[3,10], var_beta=[1,1])
             script, div = components(plots, CDN)
             return render(request, 'stats/probit_input.html', {'form':form,'script':script,'div':div,})
     else:

@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import math
 import statsmodels.api as sm
+import statsmodels  # This is ugly!
 
 from matplotlib import cm
 from numpy import linspace
@@ -139,29 +140,7 @@ def gibbs(X,y,iterrs=500,burn=100, beta_not = [1,1], var_beta = [1,1]):
     betas = posterior_draw.loc[burn:iterrs].mean()
     return (betas, y_stars, posterior_draw)
 
-
-
-"""Use in production function"""
-def full_gibbs(X, y, iterrs=500, burn=100, beta_not = [1,1], var_beta = [1,1]):
-    graphs = []
-    (betas, y_stars, posterior_draws) = gibbs(X,y,iterrs=iterrs,burn=burn, beta_not=beta_not, var_beta=var_beta)
-    # Convergence information
-    posterior_ts = posterior_draws.plot()
-    posterior_ts = mpl.to_bokeh()
-    graphs.append(posterior_ts)
-    auto = autocorrelation_plot(posterior_draws)
-    auto = mpl.to_bokeh()
-    graphs.append(auto)
-    # Posterior densities of our parameters
-    for beta in posterior_draws:
-        graph = str(beta)
-        graph = posterior_draws[beta][burn:iterrs-1].plot.kde()
-        plt.title("Posterior density of " + str(beta))
-        graph = mpl.to_bokeh()
-        graphs.append(graph)
-    return graphs
-
-
+# Create plots of  our evolving distributions as we change the prior belief
 def prior_sens(list_of_priors, iterrs=500, burn=100):
     colors = [ cm.viridis(x) for x in linspace(0, 1, len(list_of_priors)) ]
     (X,y,latent_y) = create_data()
@@ -178,6 +157,41 @@ def prior_sens(list_of_priors, iterrs=500, burn=100):
         plots.append(plot)
     return plots
 
+# Helper functions for autocorrelations that will work with Bokeh.
+def auto_plot(df):
+    plots = []
+    for i in range(df.shape[1]): # For each column in the dataframe
+        title = "ACF of our series of Beta " + str(i) + "'s"
+        plot = better_auto(df[i],title=title)
+        plots.append(plot)
+    return plots
+
+def better_auto(series, title):
+    acc = statsmodels.tsa.stattools.acf(series, nlags=len(series))
+    time = list(range(len(series)))
+    plot = figure(title=title, x_axis_label='lag number', y_axis_label='ac')
+    plot.line(time, acc, legend="Autocorrelations", line_width=2)
+    return plot
+
+"""Production Gibbs"""
+def full_gibbs(X, y, beta_not, var_beta, iterrs=500, burn=100):
+    graphs = []
+    (betas, y_stars, posterior_draws) = gibbs(X,y,iterrs=iterrs,burn=burn, beta_not=beta_not, var_beta=var_beta)
+    # Convergence information
+    posterior_ts = posterior_draws.plot()
+    posterior_ts = mpl.to_bokeh()
+    graphs.append(posterior_ts)
+    ac_plots = auto_plot(posterior_draws)
+    for plot in ac_plots:
+        graphs.append(plot)
+    # Posterior densities of our parameters
+    for beta in posterior_draws:
+        graph = str(beta)
+        graph = posterior_draws[beta][burn:iterrs-1].plot.kde()
+        plt.title("Posterior density of " + str(beta))
+        graph = mpl.to_bokeh()
+        graphs.append(graph)
+    return graphs
 
 
 
@@ -187,6 +201,7 @@ def prior_sens(list_of_priors, iterrs=500, burn=100):
 
 
 
+# Home page picture
 def back_ground(X,y):
     N = len(y)
     x = X[1]
