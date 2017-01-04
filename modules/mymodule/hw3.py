@@ -27,7 +27,8 @@ from bokeh.io import show
 def process(beta_not = np.transpose([0,10,5000,10000,10000])):
     # Load and format the data
     df = pd.read_table('HDATA.txt', delim_whitespace=True)  # It seems numpy and pandas play nice
-    df.head()
+    # Use the below path for production
+    # df = pd.read_table('/home/brica999/BayesianPS3/HDATA.txt' delim_whitespace=True)
     #df.shape
     X = df.loc[:,'lot':'sty']
     y = df.sell
