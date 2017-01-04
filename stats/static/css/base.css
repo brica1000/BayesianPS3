@@ -6,14 +6,15 @@
 
 .equation {
   position: relative;
-  left: 40%;
-  width: 20%;
+  left: 30%;
+  width: 30%;
   display: inline-block;
+  text-align: center;
 }
 
 .equation-number {
   position: relative;
-  left: 60%;
+  left: 50%;
   width: 20%;
   display: inline-block;
 }

@@ -14,8 +14,7 @@
       my childhood was filled with warnings about the lurking dangers online, yet, more and more of us are turning to the internet for every service imaginable.
       I would like to use people's experiences on CouchSurfing to see what we can learn about how things are going as we increasingly
       mix our on and offline lives.
-      <br>
-      <br>
+      <br><br>
       The plan is to write a program to scrape some simple data from the all hosts in a
       particular city (at least all those who are active), I choose Helsinki to start with,
       and then try and answer the simple question - which factors make it more likely that
@@ -28,8 +27,7 @@
       in IV. I will present my results, which will be discussed in
       V.  Finally in section
       VI. one can find my sources as well as links to my code.
-      <br>
-      <br>
+      <br><br>
       As one final note, doubtless the reader has noticed that this paper is presented online - this is for two reasons,
       one, it was simply fun to put it online, and two, it allows the reader to interact with my code
       and generate their own graphs.  This is a highly desirable trait within the Bayesian framework, as well as
@@ -43,7 +41,7 @@
 <div class="paper-section">
     <h3>II. The Data</h3>
       <p class="paper-text">
-        The data set that I created is only modest start on the path to understanding the interactions
+        The data set analyzed below is only modest start on the path to understanding the interactions
         born from online networks, however, it should serve to illustrate our procedure.  To collect
         the data was
          as simple as going through every host listed in a particular city
@@ -51,15 +49,14 @@
         their profile is and other such measures easily available.  As this would be rather tedious to complete
         by hand, I wrote a program, which has the great advantage that it is simple to gather more, or to
         extend to create more refined data sets.  For a start, I will
-        analyze hosts in Helsinki.  I have selected age, sex, how long a user has been a member,
-        and profile length for my data matrix X.  The dependent variable is a binary outcome
-        that is 1 if aa users profile has no neutral/negative reviews, and 0 if there are one or more.  After
-        my analysis, I also compare my results to those based on data from Stockholm and
+        analyze hosts in Helsinki.  I have selected, from everything collected, age, sex, how long a user has been a member,
+        and profile length for my data matrix X.  The dependent variable y is a binary outcome
+        that is 1 if a user's profile has no neutral/negative reviews, and 0 if there are one or more.  I also
+        compare my results to the same data from Stockholm and
         Saint Petersburg.  But before moving on to the procedure, let me go over several caveats related to
         my data set,
         some practical, and one ethical.
-        <br>
-        <br>
+        <br><br>
         First, web-scraping is fiendishly finicky.  When the HTML isn't consistent or gets changed, the
         whole sections of the program must be debugged and rewritten.  Thankfully, during the time I have been working
         on this program as a hobby, this hasn't been a problem.  But, there are still some users
@@ -67,16 +64,14 @@
         their profiles have strange and unique HTML.  However I see no reason to think that this poses a
         statical threat,
         only that we have dropped random observations.
-        <br>
-        <br>
+        <br><br>
         Also, CouchSurfing groups hosts by city, but the profile of a user in any given city will contain
         information about experiences in many other places in addition to that city.  However, it is
         quite a task to filter and sort experiences by city, although this would of course be interesting.
         For our task, to answer our question, we will not be able to say exactly how geography
         influences things, as we have collected our sample in a manner that only roughly represent the
         geographical location from which it was collected.
-        <br>
-        <br>
+        <br><br>
         I don't wish to delve into my findings here, but it must be pointed out that there
         are very few negative experiences.  This is wonderful.  But from a statistical standpoint,
         a bit of a complication; we must ensure that we have enough observations.  In my data set from Helsinki
@@ -87,14 +82,12 @@
         negative experiences I am making the implicit asumption that, on average, people
         purposefully marked the review
         as negative and for whatever reason didn't elaborate.
-        <br>
-        <br>
+        <br><br>
         Furthermore, one might wish to be
         careful about seperating hosts from surfers.  This is another dimension that for our purpose
         if a needless complication; I believe we have sufficient
         information to make a start.
-        <br>
-        <br>
+        <br><br>
         Also, I would like to assure reader that I have scoured the terms and conditions of CouchSurfing and
         am certain our inquiry into safety is anything but a violation.  In fact, the amount of
         wonderful experiences and very very few negative is a confirmation to the genius of
@@ -105,7 +98,6 @@
         We live in an amazing, and not a small bit frightening, time when so much information is
         available to those who know how to collect and manipulate it.
       </p>
-
 </div>
 
 <div class="paper-section">
@@ -119,28 +111,50 @@
         data set using a Gibbs sampler.  Then, the rest is simply collecting our posterior
         draws to learn about their distribution and following up by checking how sensitive
         this is to our prior assumptions.
-        <br>
-        <br>
+        <br><br>
         We could of course fit a linear model without fuss, however, there is the not-insurmountable
-        problem that our dependent variable is binary, hence we would like our model to provide point estimates
-        of 1 or 0, as opposed to -.02 when predictings 'good experience'.  Suppose for a moment that we were
+        problem that our dependent variable is binary, hence a linear model without corrections
+        is not going to have desirable properties.  Suppose for a moment, however, that we were
         not predicting yes or no, but rather some linear variable with a cutoff that values above which
-        correspond to 1, and to 0 for below.  Such a variable, in a more general context, correspond
+        correspond to 1, and to 0 for below.  Such a variable, in a more general context, corresponds
         to the utility of a decision.  Specifically, in our context, it is rather odd
         to speak of the utility of choosing to have a good experience, but this only says that
         there are situation, i.e. user profiles, that make it more or less likely that everyone
         will have a nice time.  Accepting this latent variable, we could then follow the standard Bayesian procedures
-        and calculate our posteriors from known distributions.  But we are not given this continuous variable.
-        We must infer it by continuous updating based on repeated sampling within a Gibbs sampler.  Allow
-        me to elaborate on the procedure outlined in Koopman.<sup>1</sup>
+        and calculate our posteriors from known distributions.  But we are not given this variable, but rather
+        we must infer it by continuous updating based on repeated sampling within a Gibbs sampler.  Allow
+        me to elaborate on the procedure outlined in Koopman.<sup>1</sup>  I also hope that all that
+        follows in this section should be clear to a reader aquainted with Bayesian theory, as well
+        as those who are not - the details and forumlas are easily found in the above source.
         <br><br>
-        Based on our assumptions and standard Bayesian theory, we know the distribution for our dependent
-        and continous variable, given that we know the parameters, &beta;; it is normal.
+        As the analysis takes place in a Bayesian framework, it follows that we should say something about
+        our priors.  For a model such as ours, there is no reason to make complicating assumptions regarding
+        our prior distributions; we stick with the standard ones.  Also, there is no great reason to use
+        highly informative priors other than based on my experience and, frankly, biases.  I hope the readers
+        can appreciate the metaphor of how using too strong a prior belief has the potential not only to
+        influence our conclusions, but what could otherwise be wonderful experiences.
+        <br><br>
+        Based on our <a href="#" data-toggle="tooltip" data-placement="bottom" title="Namely, that the
+        disribution of our errors is normal and that they are independent of elements of X, and our
+        prior beliefs are that &beta; is distributed
+        multivariate normal
+        and h is distributed Gamma.  These lead to the all the equations implicit in what follow as well
+        as my code.">standard
+        assumptions and Bayesian Theory</a>
+        , we know the distribution for our dependent
+        and continuous variable (that we don't yet know) given the the parameters, &beta;, is normal.  This
+        distribution is built of two truncated halves, hence the indicator function.  When y is 1, we take
+        right half of our normal distribution, and when y is 0, the left.  This is actully quite intuitive, we
+        are simply setting a dividing line, in fact, it doesn't need to be 0, and capturing the fact that
+        most of the observations of the continuous are normal, some observations have characteristics that
+        suggest one binary option, some suggest the other.  Our aim is to pin down the best way to quantify
+        this relationship.
         <br><br>
       </p>
       <div>
           <div class="equation">
-            p(y* | y, &beta;, h)
+            p( y*<sub>i</sub> | y<sub>i</sub>, &beta;, h ) ~
+            N( x'<sub>i</sub>&beta; , h<sup>-1</sup> ) Indicator(y*<sub>i</sub>)
           </div>
           <div class="equation-number">
             ( 3.1 )
@@ -148,19 +162,43 @@
       </div>
       <br><br>
       <p class="paper-text">
-          But the distribution of these parameters
-        depends on our dependent variable; and indeed there is a way our of this circular impossibility.
-        Suppose we are given a guess for an intitial value for our continuous variable, call it y*, then
+        Furthermore, standard theory tells us that our parameters are Normal-Gamma, note that I leave
+        the parameters out,
+        what we care about is that they depend on constants that are calculated from y*.
+      </p>
+      <br><br>
+      <div>
+          <div class="equation">
+            p( &beta;, h | y* ) ~ NG( &middot; )
+          </div>
+          <div class="equation-number">
+            ( 3.2 )
+          </div>
+      </div>
+      <br><br>
+      <p class="paper-text">
+        The problem is the interdependence; we can't know one without the other,
+        and we know neither.  But, this circular impossibility leads to a rather elegant solution.
+        Suppose we are make a guess for an intitial value for our continuous variable, y*, then
         we could easily calculate
-        the distribution of our posteriors based on this.  But now that we know our posterior parameters,
-        we can make a best guess at a new value for y*.  Then we make a new guess at values for our parameters,
-        and so on.  This process is a convergent markov chain, and after sufficiently many simulations, we
-        will have a stable distribution for our posteriors as well as y*.
-        <br>
-        <br>
-        Let me delve into some detail about how we can calculate these.
-        <br>
-        <br>
+        the distribution of our posteriors by sampling from (3.2).  But now that we know our posterior parameters,
+        we can make a best guess at a new value for y* by sampling from (3.1).  This isn't so strait forward.  We
+        sample in the following way.  For each observation, calculate x'<sub>i</sub>&beta; and make a draw from
+        (3.1), if this value is positive, and corresponds to a y value of 1, then keep this as our new value for y*.  However
+        if our draw is negative while corresponding to y=1, we must throw away the draw and keep the old y*.  This
+        is because we know a priori that such a value isn't possible, recall that we are building up a distribution
+        from two truncated halves.  Similarly, for observations where y=0, we only keep negative draws, and
+        save the old values if the new draw isn't suitable.
+        This process is a convergent markov chain, and after sufficiently many simulations, we
+        will have stable distributions for our posteriors as well as y*.  Of course, one must check how many
+        simulation rounds are sufficient, we will cover this soon.
+        <br><br>
+        There is one more detail before we are ready to implement the algorithm - identification.  There are
+        infinitely many paramenter values that lead to the same model, that is, we are building up a normal
+        distribution, but there is nothing that constrains it's variance.  Without pinning this down, we can
+        not say anything about our parameters.  However, we can fix h to 1, which then ensures a unique estimate
+        for &beta; which serves to answer our question.
+        <br><br>
         Below is sample output with generated data based on the relationship
         Y = 3X + 10Z + &epsilon;.  One can also follow the link to change certain
         parameters and explore their effect on our sampler and its convergence to the posterior.
