@@ -20,7 +20,8 @@
       and then try and answer the simple question - which factors make it more likely that
       someone will have a bad experience?
       In answering this question, I have elected to do my analysis within the Bayesian
-      framework based on a linear probit model.
+      framework based on a linear probit model.  This has been shown to be efficient, as well as have
+      all the advantages that come by working in the Bayesian realm.<sup>1</sup>
       The rest of the paper will proceed as follows; section II. will outline the
       data set and how it was collected,
       in III. I will go into the details and theory of the model and algorithm used,
@@ -106,7 +107,7 @@
         To understand the factors that affect whether or not one is likely to have a good
         experience on CoushSurfing, one really only needs a binary classification method.
         There are many to choose from, and most have their analogous variant within the Bayesian
-        framework.  As a logical place to start, that is, with as few assumptions as possible,
+        framework.  As a logical place to start,
         it would be ideal to fit a linear model.  We can do this quite elegantly by augmenting our
         data set using a Gibbs sampler.  Then, the rest is simply collecting our posterior
         draws to learn about their distribution and following up by checking how sensitive
@@ -123,7 +124,7 @@
         will have a nice time.  Accepting this latent variable, we could then follow the standard Bayesian procedures
         and calculate our posteriors from known distributions.  But we are not given this variable, but rather
         we must infer it by continuous updating based on repeated sampling within a Gibbs sampler.  Allow
-        me to elaborate on the procedure outlined in Koopman.<sup>1</sup>  I also hope that all that
+        me to elaborate on the procedure outlined in Koop.<sup>2</sup>  I also hope that all that
         follows in this section should be clear to a reader aquainted with Bayesian theory, as well
         as those who are not - the details and forumlas are easily found in the above source.
         <br><br>
@@ -144,11 +145,12 @@
         , we know the distribution for our dependent
         and continuous variable (that we don't yet know) given the the parameters, &beta;, is normal.  This
         distribution is built of two truncated halves, hence the indicator function.  When y is 1, we take
-        right half of our normal distribution, and when y is 0, the left.  This is actully quite intuitive, we
-        are simply setting a dividing line, in fact, it doesn't need to be 0, and capturing the fact that
-        most of the observations of the continuous are normal, some observations have characteristics that
-        suggest one binary option, some suggest the other.  Our aim is to pin down the best way to quantify
-        this relationship.
+        right half of our normal distribution, and when y is 0, the left.  This is actully quite intuitive and
+        replects that we
+        are setting a dividing line and capturing the fact that
+        some observations have characteristics that
+        suggest one binary option, some suggest the other.  Our task is to build this variable so we can
+        estimate our parameters of interest.
         <br><br>
       </p>
       <div>
@@ -162,7 +164,7 @@
       </div>
       <br><br>
       <p class="paper-text">
-        Furthermore, standard theory tells us that our parameters are Normal-Gamma, note that I leave
+        Furthermore, standard theory tells us that our posterior is Normal-Gamma, note that I leave
         the parameters out,
         what we care about is that they depend on constants that are calculated from y*.
       </p>
@@ -189,9 +191,17 @@
         is because we know a priori that such a value isn't possible, recall that we are building up a distribution
         from two truncated halves.  Similarly, for observations where y=0, we only keep negative draws, and
         save the old values if the new draw isn't suitable.
-        This process is a convergent markov chain, and after sufficiently many simulations, we
+        This process is a convergent markov chain<sup>3</sup>, and after sufficiently many simulations, we
         will have stable distributions for our posteriors as well as y*.  Of course, one must check how many
         simulation rounds are sufficient, we will cover this soon.
+        <br><br>
+        One might be worried that since our data set is uneven, that is, there are far more
+        good experiences than bad, that by building up our latent variable by using 0 as our truncation
+        point we are creating a lop-sided normal distribution centered at 0.  This is not
+        the case.  Indeed our y* will be normal,
+        however, it will be shifted since the bulk of the observations will be positive and correspond
+        to the 1's in y.  Recall, we are drawing y*'s from a distribution centered around x<sub>i</sub>&beta;,
+        not 0.  Comparing to 0 is simply a check that we have drawn a feasible new guess for y*.
         <br><br>
         There is one more detail before we are ready to implement the algorithm - identification.  There are
         infinitely many paramenter values that lead to the same model, that is, we are building up a normal
@@ -224,9 +234,19 @@
 
 <div class="paper-section">
     <h3>V. Conclusions</h3>
-      <p class="paper-text">
+      <h4></h4>
+        <p class="paper-text">
 
-      </p>
+
+
+        </p>
+      <h4 class="paper-text">Convergence</h4>
+        <p class="paper-text">
+          An essential part of running a Gibbs sampler is to check whether or not it converged.  A quick
+          look at the autocorrelation plot of each posterior series will give us an idea, but to be more formal,
+          we accomplish this by running a simple convergence diagnostic on each posterior series.<sup>2</sup>
+
+        </p>
 
 </div>
 
@@ -235,11 +255,14 @@
     <div class="paper-text">
         <h4>References</h4>
           <ol>
-            <li>Koopman</li>
             <li><a target="_blank" href="https://www.minneapolisfed.org/research/sr/sr170.pdf">
               Geweke, Keane, Runkle. May 1994. Alternative Computational Approaches to
               Inference in the Multinomial Probit Model. Federal Reserve Bank of Minneapolis.</a>
-            </tbody></li>
+            </li>
+            <li>Koop. 2006. Bayesian Econometrics.</li>
+            <li><a target="_blank" href="https://projecteuclid.org/download/pdf_1/euclid.aos/1176325750">
+              Tierney. The Annals of Statistics, 1994, volume 22, No. 4, 1701-1762.</a>
+            </li>
           </ol>
         <h4>Source Code</h4>
           <p>

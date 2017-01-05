@@ -16,6 +16,11 @@
       </div>
     </form>
 
+    <div>
+        {% for line in text %}
+        <h4>{{ text }}</h4>
+        {% endfor %}
+    </div>
 
     {% for d in div %}
     {% autoescape off %}

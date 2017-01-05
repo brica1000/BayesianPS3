@@ -68,9 +68,9 @@ def gibbs_results(request):
     else:
         return HttpResponseRedirect(reverse('edit_gibbs'))
 
+"""Data Augmentation"""
 def probit(request):
     return render(request, 'stats/probit.html', {})
-
 
 def probit_input(request):
     if request.method == "POST":
@@ -79,9 +79,9 @@ def probit_input(request):
             result = form.save(commit=False)
             result.save()
             (X,y,latent_y) = bayesian_probit.create_data()
-            plots = bayesian_probit.full_gibbs(X,y,iterrs=200, beta_not=[3,10], var_beta=[1,1])
+            (plots, text) = bayesian_probit.full_gibbs(X,y,iterrs=200, beta_not=[3,10], var_beta=[1,1])
             script, div = components(plots, CDN)
-            return render(request, 'stats/probit_input.html', {'form':form,'script':script,'div':div,})
+            return render(request, 'stats/probit_input.html', {'form':form,'script':script,'div':div,'text':text,})
     else:
         form = StatsInputForm(initial={'title': "Doesn't matter yet, hit submit!"})
     return render(request, 'stats/probit_input.html', {'form':form,})
@@ -108,9 +108,9 @@ def actual(request):
             result = form.save(commit=False)
             result.save()
             (X,y) = bayesian_probit.load_data()
-            plots = bayesian_probit.full_gibbs(X,y,iterrs=200,burn=100,beta_not=[0,0,0,0,0],var_beta=[200,200,200,200,200])
+            (plots, text) = bayesian_probit.full_gibbs(X,y,iterrs=200,burn=100,beta_not=[0,0,0,0,0],var_beta=[200,200,200,200,200])
             script, div = components(plots, CDN)
-            return render(request, 'stats/actual.html', {'form':form,'script':script,'div':div,})
+            return render(request, 'stats/actual.html', {'form':form,'script':script,'div':div,'text':text,})
     else:
         form = StatsInputForm(initial={'title': "Doesn't matter yet, hit submit!"})
     return render(request, 'stats/probit_input.html', {'form':form,})

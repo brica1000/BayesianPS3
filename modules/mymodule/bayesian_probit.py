@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from scipy.stats import norm # note scale is stdev.
 from scipy.stats import uniform
+import scipy.stats as st
 # from scipy.stats import gamma # must set a = shape (alpha from wiki), rate (1/ scale[beta])
 from scipy.stats import t
 from scipy.special import gamma as gammaf
@@ -64,7 +65,7 @@ def create_data():
 # Real data
 def load_data():
     # Load and format the data
-    df = pd.read_csv('/mysite/data_try_2.csv')
+    df = pd.read_csv('data_try_2.csv')
     # Use the below path for production
     # df = pd.read_csv('/home/brica999/BayesianPS3/data_try_2.csv')
     df['member_years'] = pd.to_numeric(df['member_since'].str[2:6]).apply(lambda x: 2017-x)
@@ -173,6 +174,26 @@ def better_auto(series, title):
     plot.line(time, acc, legend="Autocorrelations", line_width=2)
     return plot
 
+def convergence(posterior_df,burn,alpha=.05):
+    T = len(posterior_df[0]) - 1
+    ABC = T - burn
+    A = burn + .33*ABC
+    B = burn + .66*ABC
+    rt_a = math.sqrt(.33*ABC)
+    rt_c = rt_a
+    upper = st.norm.ppf(1 - alpha/2)
+    lower = upper * -1
+    text = []
+    for i in posterior_df:
+        mean_a = posterior_df[i].loc[burn:A].mean()
+        std_a = posterior_df[i].loc[burn:A].std()
+        mean_c = posterior_df[i].loc[B:T].mean()
+        std_c = posterior_df[i].loc[B:T].std()
+        cd = (mean_a - mean_c)/(std_a/rt_a + std_c/rt_c)
+        if cd < upper and cd > lower:
+            text.append("Beta " + str(i) + " has converged!")
+    return text
+
 """Production Gibbs"""
 def full_gibbs(X, y, beta_not, var_beta, iterrs=500, burn=100):
     graphs = []
@@ -191,7 +212,8 @@ def full_gibbs(X, y, beta_not, var_beta, iterrs=500, burn=100):
         plt.title("Posterior density of " + str(beta))
         graph = mpl.to_bokeh()
         graphs.append(graph)
-    return graphs
+    text = convergence(posterior_draws, burn)
+    return (graphs, text)
 
 
 
