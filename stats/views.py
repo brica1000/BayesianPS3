@@ -78,12 +78,14 @@ def probit_input(request):
         if form.is_valid():
             result = form.save(commit=False)
             result.save()
+            inputs = Code.objects.all()  # We can be more clever
+            (beta_not, var_beta, iterrs, burn) = eval(inputs[len(inputs)-1].title) # Inputs
             (X,y,latent_y) = bayesian_probit.create_data()
-            (plots, text) = bayesian_probit.full_gibbs(X,y,iterrs=200, beta_not=[3,10], var_beta=[1,1])
+            (plots, text) = bayesian_probit.full_gibbs(X,y,iterrs=iterrs, beta_not=beta_not, var_beta=var_beta, burn=burn)
             script, div = components(plots, CDN)
             return render(request, 'stats/probit_input.html', {'form':form,'script':script,'div':div,'text':text,})
     else:
-        form = StatsInputForm(initial={'title': "Doesn't matter yet, hit submit!"})
+        form = StatsInputForm(initial={'title': "[3,10], [1,1], 200, 100"})
     return render(request, 'stats/probit_input.html', {'form':form,})
 
 def sensitivity(request):

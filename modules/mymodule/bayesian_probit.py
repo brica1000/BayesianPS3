@@ -174,7 +174,7 @@ def better_auto(series, title):
     plot.line(time, acc, legend="Autocorrelations", line_width=2)
     return plot
 
-def convergence(posterior_df,burn,alpha=.05):
+def convergence(posterior_df,burn,alpha=.1):
     T = len(posterior_df[0]) - 1
     ABC = T - burn
     A = burn + .33*ABC
@@ -200,6 +200,7 @@ def full_gibbs(X, y, beta_not, var_beta, iterrs=500, burn=100):
     (betas, y_stars, posterior_draws) = gibbs(X,y,iterrs=iterrs,burn=burn, beta_not=beta_not, var_beta=var_beta)
     # Convergence information
     posterior_ts = posterior_draws.plot()
+    posterior_ts.title.set_text('Posterior draws for each series of betas')
     posterior_ts = mpl.to_bokeh()
     graphs.append(posterior_ts)
     ac_plots = auto_plot(posterior_draws)
@@ -209,7 +210,7 @@ def full_gibbs(X, y, beta_not, var_beta, iterrs=500, burn=100):
     for beta in posterior_draws:
         graph = str(beta)
         graph = posterior_draws[beta][burn:iterrs-1].plot.kde()
-        plt.title("Posterior density of " + str(beta))
+        plt.title("Posterior density of Beta " + str(beta))
         graph = mpl.to_bokeh()
         graphs.append(graph)
     text = convergence(posterior_draws, burn)
