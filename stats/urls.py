@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^probit_input/', views.probit_input, name='probit_input'),
     url(r'^sensitivity/', views.sensitivity, name='sensitivity'),
     url(r'^actual/', views.actual, name='actual'),
+    url(r'^sensitivity_actual/', views.sensitivity_actual, name='sensitivity_actual'),
 
     ]

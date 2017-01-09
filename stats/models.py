@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class Code(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=300)
     text = models.TextField()
 
 

@@ -118,3 +118,18 @@ def actual(request):
     else:
         form = StatsInputForm(initial={'title': "[0,0,0,0,0], [200,200,200,200,200], 200, 100"})
     return render(request, 'stats/probit_input.html', {'form':form,})
+
+def sensitivity_actual(request):
+    if request.method == "POST":
+        form = StatsInputForm(request.POST)
+        if form.is_valid():
+            result = form.save(commit=False)
+            result.save()
+            inputs = Code.objects.all()  # We can be more clever
+            (list_of_priors, list_of_var_beta ,iterrs, burn) = eval(inputs[len(inputs)-1].title) # Inputs
+            plots = bayesian_probit.prior_sens(list_of_priors, list_of_var_beta, iterrs=iterrs, burn=burn)
+            script, div = components(plots, CDN)
+            return render(request, 'stats/sensitivity_actual.html', {'form':form,'script':script,'div':div,})
+    else:
+        form = StatsInputForm(initial={'title': '[ [0,0,0,0,0], [5,5,5,5,5], [10,10,10,10,10] ],  [ [100,100,100,100,100], [.1,.1,.1,.1,.1], [10,10,10,10,10] ], 200, 100'})
+    return render(request, 'stats/sensitivity_actual.html', {'form':form,})

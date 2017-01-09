@@ -144,13 +144,16 @@ def gibbs(X,y,iterrs=500,burn=100, beta_not = [1,1], var_beta = [1,1]):
 # Create plots of  our evolving distributions as we change the prior belief
 def prior_sens(list_of_priors,list_of_var_beta, iterrs=500, burn=100):
     colors = [ cm.viridis(x) for x in linspace(0, 1, len(list_of_priors)) ]
-    (X,y,latent_y) = create_data()
+    if len(list_of_priors[0])==2:
+        (X,y,latent_y) = create_data()
+    else:
+        (X,y) = load_data()
     for prior,var,color in zip(list_of_priors,list_of_var_beta,colors):
         (betas, y_stars, posterior_draws) = gibbs(X,y,iterrs=iterrs,burn=burn, beta_not=prior, var_beta=var)
         for beta, i in zip(posterior_draws,range(len(prior))):
             plt.figure(i+1)
             posterior_draws[beta][burn:iterrs-1].plot.kde(c=color)
-            plt.title("Posterior density of " + str(beta))
+            plt.title("Posterior density of beta" + str(beta))
     plots = []
     for i in range(len(list_of_priors[0])):  # We cant send to bokehsooner, we arent done with the graph
         plt.figure(i+1)

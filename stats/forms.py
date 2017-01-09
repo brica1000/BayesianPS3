@@ -12,5 +12,5 @@ class StatsInputForm(forms.ModelForm):
         fields = ('title',)
         widgets = {
             'title': forms.fields.TextInput(attrs={'size':'70',}),
-            #'text': forms.fields.TextInput(attrs={'placeholder': "Enter 'one', 'two', or something else"})
+            # 'text': forms.fields.TextInput(attrs={'size':'100'})
         }
