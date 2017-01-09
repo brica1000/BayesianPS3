@@ -18,3 +18,8 @@
   width: 20%;
   display: inline-block;
 }
+
+#generated {
+  width: 100%;
+  height: auto;
+}

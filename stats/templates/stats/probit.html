@@ -219,7 +219,6 @@
       </p>
     <h3 class="paper-text"><a href="{% url 'probit_input' %}">The algorithm</a></h3>
       <p class="paper-text">
-        <br><br>
         Despite the nature of this data, there are many salient features worth noting.  First, if our
         prior belief is something like [0,0],[1,1], our algorithm will converge, but not to the correct
         coefficients because our prior's are restricting the algorithm from iterrating where it should.  We
@@ -227,7 +226,9 @@
         notices that our algorithm wanders around the correct coefficient, but our convergence diagnostics
         is not satisfied.  Suppose we knew our priors, and set them to [3,10], then
         with a low prior on variance of say [.1,.1], we would converge rapidly, and furthermore have a tighter
-        posterior density.  The point is, one must be exceedingly careful when using this method with real data,
+        posterior density.  Also, reassuringly, it seems to be very difficult to get a result of the
+        wrong sign, for example, starting off with a negative prior belief on our betas will not result
+        in a negative posterior mean.  All in all, the point is, one must be exceedingly careful when using this method with real data,
         and we will according set our priors in what follows.
         <br><br>
         For a more dynamic look at exactly how our prior influence the posterior distributions, one may
