@@ -95,12 +95,12 @@ def sensitivity(request):
             result = form.save(commit=False)
             result.save()
             inputs = Code.objects.all()  # We can be more clever
-            (list_of_priors, iterrs) = eval(inputs[len(inputs)-1].title) # Inputs
-            plots = bayesian_probit.prior_sens(list_of_priors, iterrs=iterrs)
+            (list_of_priors, list_of_var_beta ,iterrs, burn) = eval(inputs[len(inputs)-1].title) # Inputs
+            plots = bayesian_probit.prior_sens(list_of_priors, list_of_var_beta, iterrs=iterrs, burn=burn)
             script, div = components(plots, CDN)
             return render(request, 'stats/sensitivity.html', {'form':form,'script':script,'div':div,})
     else:
-        form = StatsInputForm(initial={'title': '[ [1,1], [5,5], [10,10], [20,20] ],  200'})
+        form = StatsInputForm(initial={'title': '[ [1,1], [5,5], [10,10], [20,20] ],  [ [10,10], [10,10], [10,10], [10,10] ], 200, 100'})
     return render(request, 'stats/sensitivity.html', {'form':form,})
 
 def actual(request):
@@ -109,10 +109,12 @@ def actual(request):
         if form.is_valid():
             result = form.save(commit=False)
             result.save()
+            inputs = Code.objects.all()  # We can be more clever
+            (beta_not, var_beta, iterrs, burn) = eval(inputs[len(inputs)-1].title) # Inputs
             (X,y) = bayesian_probit.load_data()
-            (plots, text) = bayesian_probit.full_gibbs(X,y,iterrs=200,burn=100,beta_not=[0,0,0,0,0],var_beta=[200,200,200,200,200])
+            (plots, text) = bayesian_probit.full_gibbs(X,y,iterrs=iterrs,burn=burn,beta_not=beta_not,var_beta=var_beta)
             script, div = components(plots, CDN)
             return render(request, 'stats/actual.html', {'form':form,'script':script,'div':div,'text':text,})
     else:
-        form = StatsInputForm(initial={'title': "Doesn't matter yet, hit submit!"})
+        form = StatsInputForm(initial={'title': "[0,0,0,0,0], [200,200,200,200,200], 200, 100"})
     return render(request, 'stats/probit_input.html', {'form':form,})

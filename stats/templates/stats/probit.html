@@ -212,8 +212,27 @@
         Below is sample output with generated data based on the relationship
         Y = 3X + 10Z + &epsilon;.  One can also follow the link to change certain
         parameters and explore their effect on our sampler and its convergence to the posterior.
+        Note that the notation is as follows; [0,0], [10,10], 200, 100 where the first entry is our
+        prior on beta 1 and beta 2, the second is our prior on the variance, 200 represents the number
+        of iterrations to go through, and 100 how many to throw out for calculating our convergence
+        diagnostic.
       </p>
     <h3 class="paper-text"><a href="{% url 'probit_input' %}">The algorithm</a></h3>
+      <p class="paper-text">
+        <br><br>
+        Despite the nature of this data, there are many salient features worth noting.  First, if our
+        prior belief is something like [0,0],[1,1], our algorithm will converge, but not to the correct
+        coefficients because our prior's are restricting the algorithm from iterrating where it should.  We
+        can aviod this problem by making our variance prior much larger, such as [200,200], but then, one
+        notices that our algorithm wanders around the correct coefficient, but our convergence diagnostics
+        is not satisfied.  Suppose we knew our priors, and set them to [3,10], then
+        with a low prior on variance of say [.1,.1], we would converge rapidly, and furthermore have a tighter
+        posterior density.  The point is, one must be exceedingly careful when using this method with real data,
+        and we will according set our priors in what follows.
+        <br><br>
+        For a more dynamic look at exactly how our prior influence the posterior distributions, one may
+        manipulate the tool in the following link.
+      </p>
     <h3 class="paper-text"><a href="{% url 'sensitivity' %}">Sensitivity analysis</a></h3>
 </div>
 

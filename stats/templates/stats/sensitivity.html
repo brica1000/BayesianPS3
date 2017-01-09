@@ -6,10 +6,13 @@
   <form method="POST" class="form-horizontal">
     {% csrf_token %}
     <div class="form-group">
-        <p>Enter a list of priors and the number of itterations, for example [ [10,10], [2,2], ... ], iterrs=200 </p>
+        <p>Enter a list of priors for the betas as well as the priors on the variance and
+          the number of itterations, for example
+           [ [10,10], [2,2], ... ], [ [.1,.1], [100,100], ... ],  iterrs=200, burn=100 </p>
         <ul>
           <li>This won't work if the input is not in the above form.</li>
-          <li>However, feel free to extend the list of priors to see how they affect our analysis.</li>
+          <li>However, feel free to extend the lists of priors to see how they affect our analysis.  Just
+          remember to add the prior variances if you add a prior coefficients.</li>
         </ul>
         {{ form.title }}
     </div>
