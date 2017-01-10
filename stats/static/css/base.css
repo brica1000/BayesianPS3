@@ -26,8 +26,6 @@
 
 #fixed {
   position: fixed;
-}
-
-#actual-text {
-  top: 
+  right: 15%;
+  top: 20%;
 }

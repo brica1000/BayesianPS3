@@ -5,20 +5,23 @@
   <h1>Sensitivity Analysis</h1>
   <form method="POST" class="form-horizontal">
     {% csrf_token %}
-    <div class="form-group">
-      <ul id="fixed">
+    <div id="fixed">
+      <h5> Recall </h5>
+      <ul>
         <li>Beta 0: Our constant</li>
         <li>Beta 1: Age </li>
         <li>Beta 2: Profile Length </li>
         <li>Beta 3: How long a user has been a member </li>
         <li>Beta 4: Male </li>
       </ul>
-        <p class="actual-text">The first 5 numbers are the priors
+    </div>
+    <div class="form-group" id="actual-text">
+        <p >The first 5 numbers are the priors
           on each value for beta corresponding to the above order.  The next collection of 5 are the prior
           beliefs on the variance of these betas, the penulitmate number is the number of iterations to go
           through and the final parameter is the number to burn.
         </p>
-        <ul class="actual-text">
+        <ul>
           <li>This won't work if the input is not in the above form.</li>
           <li>However, feel free to change the priors to see how they affect our analysis.</li>
         </ul>
@@ -30,9 +33,7 @@
   </form>
 
   <div>
-      {% for line in text %}
       <h4>{{ text }}</h4>
-      {% endfor %}
   </div>
 
   {% autoescape off %}

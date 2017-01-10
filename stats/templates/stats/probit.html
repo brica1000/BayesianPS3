@@ -252,32 +252,44 @@
         Now we have our assumptions, data and the algorithm, it is time to see what can be learned about our main
         inquiry - how can we increase the probability of having a good interaction with those we met online.
 
-        </main>
 
 
 
-        How influential are our priors?
+
+        As before, one may take a look how our priors have power to skew the results.  I found that my results are
+        data driven and the prior does not influence things dramatically, or put another way, the results
+        are robust.
       </p>
     <h3 class="paper-text"><a href="{% url 'sensitivity_actual' %}">Sensitivity analysis</a></h3>
     <br>
     <p class="paper-text">
     </p>
-    <h3 class="paper-text"><a href="{% url 'actual' %}">And now the actual data</a></h3>
+    <h3 class="paper-text"><a href="{% url 'actual' %}">The algorithm and results from our data</a></h3>
 </div>
 
 <div class="paper-section">
     <h3>V. Conclusions</h3>
       <h4></h4>
         <p class="paper-text">
+          I would like to take this opportunity to say that these results are
 
 
 
         </p>
-      <h4 class="paper-text">Convergence</h4>
+      <h4 class="paper-text">Future research?</h4>
         <p class="paper-text">
-          An essential part of running a Gibbs sampler is to check whether or not it converged.  A quick
-          look at the autocorrelation plot of each posterior series will give us an idea, but to be more formal,
-          we accomplish this by running a simple convergence diagnostic on each posterior series.<sup>2</sup>
+          These results should be criticised for multiple reasons and this leaves many options open
+          for future inquiry.  The model itself is too simple, for
+          example, I am certain that we are concluding that people who have been members longer are more likely
+          to have had a negative experience simply because they have been such active contributers to
+          the community - inevitably with time one meets some strange people.  So perhaps some squared terms
+          could help.  Also, the data is too
+          simple; one would need to collect much more, and take into account other variables to get a true
+          picture.  I would even recommend to collect the text and analyze it using a bag of words model.  I
+          have been waiting to point out as well, that CouchSurfing has such a good reputation because it, more than
+          and other services I would argue, is based on a community.  Tinder, for example, doesn't have the same 
+          sort of structure that allows people to so fully develop their profile.  Clearly, there
+          are many directions one could go in and dramatically increase the power of the results.
 
         </p>
 

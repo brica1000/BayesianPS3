@@ -116,7 +116,7 @@ def actual(request):
             script, div = components(plots, CDN)
             return render(request, 'stats/actual.html', {'form':form,'script':script,'div':div,'text':text,})
     else:
-        form = StatsInputForm(initial={'title': "[0,0,0,0,0], [200,200,200,200,200], 200, 100"})
+        form = StatsInputForm(initial={'title': "[0,0,1,0,-1], [10,10,10,10,10], 200, 100"})
     return render(request, 'stats/actual.html', {'form':form,})
 
 def sensitivity_actual(request):
