@@ -50,11 +50,20 @@
         their profile is and other such measures easily available.  As this would be rather tedious to complete
         by hand, I wrote a program, which has the great advantage that it is simple to gather more, or to
         extend to create more refined data sets.  For a start, I will
-        analyze hosts in Helsinki.  I have selected, from everything collected, age, sex, how long a user has been a member,
-        and profile length for my data matrix X.  The dependent variable y is a binary outcome
-        that is 1 if a user's profile has no neutral/negative reviews, and 0 if there are one or more.  I also
-        compare my results to the same data from Stockholm and
-        Saint Petersburg.  But before moving on to the procedure, let me go over several caveats related to
+        analyze hosts in Helsinki.  I have selected, from everything collected, age, profile length, how long a
+        user has been a member, a dummy variable for males, and a constant
+        for my data matrix X.  In what follows, beta 0 will correspond to the constant term, beta 1
+        to age, beta 2 to profile length, and so on.  The dependent variable y is a binary outcome
+        that is 1 if a user's profile has no neutral/negative reviews, and 0 if there are one or more.
+        <br><br>
+        Let's go over some summary statistics first.  First, we see that the average age is 31 for those
+        having good experiences, and 34 for bad.  Profile length is 1670 characters for those having good
+        experience compared to 2293, somewhat surprisingly.  Also members having good experiences have on average
+        been a member for 6 years compared to 8 for those having bad experiences.  Naturally the sample is evenly
+        split between the sexes, except there are 60% males in the sample having bad experiences.  I would like to
+        comment that these differences in sample averages tell us that there are indeed relationships to be
+        explored, even if the simplicity of the data set seems suspect.
+        But before moving on to the procedure, let me go over several caveats related to
         my data set,
         some practical, and one ethical.
         <br><br>
@@ -231,7 +240,7 @@
         in a negative posterior mean.  All in all, the point is, one must be exceedingly careful when using this method with real data,
         and we will according set our priors in what follows.
         <br><br>
-        For a more dynamic look at exactly how our prior influence the posterior distributions, one may
+        For a more dynamic look at exactly how our priors influence the posterior distributions, one may
         manipulate the tool in the following link.
       </p>
     <h3 class="paper-text"><a href="{% url 'sensitivity' %}">Sensitivity analysis</a></h3>
@@ -240,6 +249,10 @@
 <div class="paper-section">
     <h3>IV. Results</h3>
       <p class="paper-text">
+        Now we have our assumptions, data and the algorithm, it is time to see what can be learned about our main
+        inquiry - how can we increase the probability of having a good interaction with those we met online.
+
+        </main>
 
 
 

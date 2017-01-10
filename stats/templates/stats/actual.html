@@ -6,10 +6,21 @@
   <form method="POST" class="form-horizontal">
     {% csrf_token %}
     <div class="form-group">
-        <p>OK!!!!!!</p>
-        <ul>
+      <ul id="fixed">
+        <li>Beta 0: Our constant</li>
+        <li>Beta 1: Age </li>
+        <li>Beta 2: Profile Length </li>
+        <li>Beta 3: How long a user has been a member </li>
+        <li>Beta 4: Male </li>
+      </ul>
+        <p class="actual-text">The first 5 numbers are the priors
+          on each value for beta corresponding to the above order.  The next collection of 5 are the prior
+          beliefs on the variance of these betas, the penulitmate number is the number of iterations to go
+          through and the final parameter is the number to burn.
+        </p>
+        <ul class="actual-text">
           <li>This won't work if the input is not in the above form.</li>
-          <li>However, feel free to extend the list of priors to see how they affect our analysis.</li>
+          <li>However, feel free to change the priors to see how they affect our analysis.</li>
         </ul>
         {{ form.title }}
     </div>
@@ -27,6 +38,11 @@
   {% autoescape off %}
   {{ div }}
   {% endautoescape %}
+
+  <div>
+    <img src='/static/images/generated_actual.jpg' id="generated">
+  </div>
+
 </div>
 
 {% endblock %}
