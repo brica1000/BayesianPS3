@@ -27,5 +27,9 @@
 #fixed {
   position: fixed;
   right: 15%;
-  top: 20%;
+  top: 23%;
+  background-color: white;
+  z-index: 1;
+  padding: 8px;
+  border: solid;
 }

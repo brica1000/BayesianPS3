@@ -4,7 +4,7 @@
 <div class="paper-section">
   <h3>I. Introduction</h3>
     <p class="paper-text">
-      This project was born out of a curiousity about people's experience using <a target="_blank" href="https://www.couchsurfing.com">CouchSurfing.com</a>, a platform for meeting people.
+      This project was born out of a curiosity about people's experience using <a target="_blank" href="https://www.couchsurfing.com">CouchSurfing.com</a>, a platform for meeting people.
       As the internet and social media play an ever-growing role in our lives, it is important to understand
       how these interactions are playing out;
       my childhood was filled with warnings about the lurking dangers online, yet, more and more of us
@@ -45,7 +45,7 @@
         research.  To collect
         the data was
          as simple as going through every host listed in Helsinki
-        and recording information such as age, sex, location, how long they have been a memeber, how long
+        and recording information such as age, sex, location, how long they have been a member, how long
         their profile is and other such measures easily available.  As this would be rather tedious to complete
         by hand, I wrote a program, which has the great advantage that it is simple to gather more, or to
         extend and create more refined data sets.  I have selected, from everything collected, age (beta 1), profile length (beta2),
@@ -69,7 +69,7 @@
         on this program as a hobby, this hasn't been a problem.  But, there are still some users
         who slip through the cracks so to speak.  For whatever reason,
         their profiles have strange and unique HTML.  However I see no reason to think that this poses a
-        statical threat,
+        statistical threat,
         only that we have dropped random observations.
         <br><br>
         Also, CouchSurfing groups hosts by city, but the profile of a user in any given city will contain
@@ -86,19 +86,19 @@
         these interactions, and once again, wonderfully, they are duller than one would expect.  However,
         this further shrinks our sample of negative experiences.  For example, people often mark as negative something
         to the effect of, "Joe was super nice, thanks."  By including these seemingly innocuous reviews as
-        negative experiences I am making the implicit asumption that, on average, people
+        negative experiences I am making the implicit assumption that, on average, people
         purposefully marked the review
         as negative and for whatever reason didn't elaborate.
         <br><br>
         Furthermore, one might wish to be
-        careful about seperating hosts from surfers.  This is another dimension that for our purpose
+        careful about separating hosts from surfers.  This is another dimension that for our purpose
         is a needless complication.
         <br><br>
         Also, I would like to assure reader that I have scoured the terms and conditions of CouchSurfing and
         am certain our inquiry into safety is anything but a violation.  In fact, the amount of
         wonderful experiences and very very few negative is a confirmation to the genius of
         the idea.  That being said,
-        I will not post my web-scraper directly, mostly becuase it is not production ready so to speak;
+        I will not post my web-scraper directly, mostly because it is not production ready so to speak;
         it could well break if CouchSurfing changes any small bit of HTML.  However, I would be happy
         to help anyone with a worthy cause who would like to tap into the wealth of information available online.
         We live in an amazing, and not a small bit frightening, time when so much information is
@@ -130,8 +130,8 @@
         and calculate our posteriors from known distributions.  But we are not given this variable, but rather
         we must infer it by continuous updating based on repeated sampling within a Gibbs sampler.  Allow
         me to elaborate on the procedure outlined in Koop.<sup>2</sup>  I also hope that all that
-        follows in this section should be clear to a reader aquainted with Bayesian theory as well
-        as those who are not - the details and forumlae are easily found in my sources.
+        follows in this section should be clear to a reader acquainted with Bayesian theory as well
+        as those who are not - the details and formulae are easily found in my sources.
         <br><br>
         As the analysis takes place in a Bayesian framework, it follows that we should say something about
         our priors.  For a model such as ours, there is no reason to make complicating assumptions regarding
@@ -148,10 +148,10 @@
         as my code.">rather vanilla
         assumptions within the Bayesian Theory</a>
         , we know the distribution for our dependent
-        and continuous variable (that we don't yet know) given the the parameters, &beta;, is normal.  This
+        and continuous variable (that we don't yet know) given the parameters, &beta;, is normal.  This
         distribution is built of two truncated halves, hence the indicator function.  When y is 1, we take
-        right half of our normal distribution, and when y is 0, the left.  This is actully quite intuitive and
-        replects that we
+        right half of our normal distribution, and when y is 0, the left.  This is actually quite intuitive and
+        reflects that we
         are setting a dividing line and capturing the fact that
         some observations have characteristics that
         suggest one binary option, some suggest the other.  Our task is to build this variable so we can
@@ -186,7 +186,7 @@
       <p class="paper-text">
         The problem is the interdependence; we can't know one without the other,
         and we know neither.  But, this circular impossibility leads to a rather elegant solution.
-        Suppose we are make a guess for an intitial value for our continuous variable, y*, then
+        Suppose we are make a guess for an initial value for our continuous variable, y*, then
         we could easily calculate
         the distribution of our posteriors by sampling from (3.2).  But now that we know our posterior parameters,
         we can make a best guess at a new value for y* by sampling from (3.1).  This isn't so strait forward.  We
@@ -209,7 +209,7 @@
         not 0.  Comparing to 0 is simply a check that we have drawn a feasible new guess for y*.
         <br><br>
         There is one more detail before we are ready to implement the algorithm - identification.  There are
-        infinitely many paramenter values that lead to the same model, that is, we are building up a normal
+        infinitely many parameter values that lead to the same model, that is, we are building up a normal
         distribution, but there is nothing that constrains its variance.  Without pinning this down, we can
         not say anything about our parameters.  However, we can fix h to 1, which then ensures a unique estimate
         for &beta; which serves to answer our question.
@@ -223,8 +223,8 @@
       <p class="paper-text">
         Despite the nature of this data, there are many salient features worth noting.  First, if our
         prior belief is something like [0,0],[1,1], our algorithm will converge, but not to the correct
-        coefficients because our prior's are restricting the algorithm from iterrating where it should.  We
-        can aviod this problem by making our variance prior much larger, such as [200,200], but then, one
+        coefficients because our prior's are restricting the algorithm from iterating where it should.  We
+        can avoid this problem by making our variance prior much larger, such as [200,200], but then, one
         notices that our algorithm wanders around the correct coefficient, but our convergence diagnostics
         is not satisfied.  Suppose we knew our priors, and set them to [3,10], then
         with a low prior on variance of say [.1,.1], we would converge rapidly, and furthermore have a tighter
@@ -244,7 +244,7 @@
       <p class="paper-text">
         Now we have our assumptions, data and the algorithm, it is time to see what can be learned about our main
         inquiry - how can we increase the probability of having a good interaction with those we meet online.  The
-        following links are analagous to the preceding two, but run using the actual data.  One must be careful
+        following links are analogous to the preceding two, but run using the actual data.  One must be careful
         in interpreting the values of our betas as we are working with a probit model.  But the sign can be
         relied on.  For example, we see that most of the density on beta 4, a dummy for males, is around -0.2,
         and we can conclude that being male increases the chances of seeing a negative experience on that profile, we
@@ -261,7 +261,7 @@
       <h3 class="paper-text"><a href="{% url 'sensitivity_actual' %}">Sensitivity analysis</a></h3>
       <p class="paper-text">
         Above, we see that age, profile length, how long a user has been a member and male all are related
-        negatively with having a good experience.  To be truely precise, one could compare a fictitious
+        negatively with having a good experience.  To be truly precise, one could compare a fictitious
         profile with another and using associated data for those two, and betas above, one could arrive
         at a y* value.  Recall that positive y*'s are for those users with only good experiences.  In
         this way, we can construct a more interpretable way to analyze marginal effects.  However, I have
@@ -275,7 +275,7 @@
       <h4></h4>
         <p class="paper-text">
           I would like to take this opportunity to say that these results are at best motivation to look
-          deeper.  That is, the negative coeffecients on age, and how long a user has been a member seems deceptive.
+          deeper.  That is, the negative coefficients on age, and how long a user has been a member seems deceptive.
           I suspect it is not that the elderly or long-time couchsurfers are particularly pernicious, but that
           this simply reflects the fact that they, in their career, have inevitably come into contact with
           some of the stranger dwellers of this planet (this suggest including squared terms).  I am a bit puzzled
@@ -293,7 +293,7 @@
           These results leave many options open
           for future inquiry.  The model itself is too simple, for
           example, I am certain that we are concluding that people who have been members longer are more likely
-          to have had a negative experience simply because they have been such active contributers to
+          to have had a negative experience simply because they have been such active contributors to
           the community - inevitably with time one meets some strange people.  So perhaps some squared terms
           could help.  Also, the data is too
           simple; one would need to collect much more, and take into account other variables to get a true
