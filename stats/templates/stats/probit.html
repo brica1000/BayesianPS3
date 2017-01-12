@@ -2,17 +2,15 @@
 {% block content %}
 
 <div class="paper-section">
-  <p>
-    Please note, this is a work in progress.  That means
-    some features and thoughts are incomplete and I am saving
-    spell check for last.  Before Jan 16th, things will look much better.
-  </p>
   <h3>I. Introduction</h3>
     <p class="paper-text">
       This project was born out of a curiousity about people's experience using <a target="_blank" href="https://www.couchsurfing.com">CouchSurfing.com</a>, a platform for meeting people.
-      As the internet and social media play an ever-growing role in our lives, it important to understand how these interactions are playing out;
-      my childhood was filled with warnings about the lurking dangers online, yet, more and more of us are turning to the internet for every service imaginable.
-      I would like to use people's experiences on CouchSurfing to see what we can learn about how things are going as we increasingly
+      As the internet and social media play an ever-growing role in our lives, it is important to understand
+      how these interactions are playing out;
+      my childhood was filled with warnings about the lurking dangers online, yet, more and more of us
+      are turning to the internet for every service imaginable.
+      I would like to use people's experiences on CouchSurfing to see what we can learn about how
+      things are going as we increasingly
       mix our on and offline lives.
       <br><br>
       The plan is to write a program to scrape some simple data from the all hosts in a
@@ -25,12 +23,12 @@
       The rest of the paper will proceed as follows; section II. will outline the
       data set and how it was collected,
       in III. I will go into the details and theory of the model and algorithm used,
-      in IV. I will present my results, which will be discussed in
+      in IV. Then, I will present my results, which will be discussed in
       V.  Finally in section
       VI. one can find my sources as well as links to my code.
       <br><br>
       As one final note, doubtless the reader has noticed that this paper is presented online - this is for two reasons,
-      one, it was simply fun to put it online, and two, it allows the reader to interact with my code
+      one, it was simply fun, and two, it allows the reader to interact with my code
       and generate their own graphs.  This is a highly desirable trait within the Bayesian framework, as well as
       in any research because I believe it enhances the ease
       with which one could replicate my inquiry.  Our scientific community has a
@@ -43,26 +41,25 @@
     <h3>II. The Data</h3>
       <p class="paper-text">
         The data set analyzed below is only modest start on the path to understanding the interactions
-        born from online networks, however, it should serve to illustrate our procedure.  To collect
+        born from online networks, however, it should serve to illustrate our procedure and motivate future
+        research.  To collect
         the data was
-         as simple as going through every host listed in a particular city
+         as simple as going through every host listed in Helsinki
         and recording information such as age, sex, location, how long they have been a memeber, how long
         their profile is and other such measures easily available.  As this would be rather tedious to complete
         by hand, I wrote a program, which has the great advantage that it is simple to gather more, or to
-        extend to create more refined data sets.  For a start, I will
-        analyze hosts in Helsinki.  I have selected, from everything collected, age, profile length, how long a
-        user has been a member, a dummy variable for males, and a constant
-        for my data matrix X.  In what follows, beta 0 will correspond to the constant term, beta 1
-        to age, beta 2 to profile length, and so on.  The dependent variable y is a binary outcome
+        extend and create more refined data sets.  I have selected, from everything collected, age (beta 1), profile length (beta2),
+        how long a
+        user has been a member (beta 3), a dummy variable for males (beta 4), and a constant (beta 0)
+        for my data matrix X.  The dependent variable y is a binary outcome
         that is 1 if a user's profile has no neutral/negative reviews, and 0 if there are one or more.
         <br><br>
-        Let's go over some summary statistics first.  First, we see that the average age is 31 for those
+        Let's go over some summary statistics that motivate our model.  First, we see that
+        the average age is 31 for those
         having good experiences, and 34 for bad.  Profile length is 1670 characters for those having good
         experience compared to 2293, somewhat surprisingly.  Also members having good experiences have on average
         been a member for 6 years compared to 8 for those having bad experiences.  Naturally the sample is evenly
-        split between the sexes, except there are 60% males in the sample having bad experiences.  I would like to
-        comment that these differences in sample averages tell us that there are indeed relationships to be
-        explored, even if the simplicity of the data set seems suspect.
+        split between the sexes, except there are 60% males in the sample having bad experiences.
         But before moving on to the procedure, let me go over several caveats related to
         my data set,
         some practical, and one ethical.
@@ -70,7 +67,7 @@
         First, web-scraping is fiendishly finicky.  When the HTML isn't consistent or gets changed, the
         whole sections of the program must be debugged and rewritten.  Thankfully, during the time I have been working
         on this program as a hobby, this hasn't been a problem.  But, there are still some users
-        split through the cracks so to speak.  For whatever reason,
+        who slip through the cracks so to speak.  For whatever reason,
         their profiles have strange and unique HTML.  However I see no reason to think that this poses a
         statical threat,
         only that we have dropped random observations.
@@ -87,7 +84,7 @@
         a bit of a complication; we must ensure that we have enough observations.  In my data set from Helsinki
         there were just over 50 negative or neutral experiences.  As a check, I have collected the entire reviews from
         these interactions, and once again, wonderfully, they are duller than one would expect.  However,
-        this further shrinks our sample of negative experiences.  For example, people often make as negative something
+        this further shrinks our sample of negative experiences.  For example, people often mark as negative something
         to the effect of, "Joe was super nice, thanks."  By including these seemingly innocuous reviews as
         negative experiences I am making the implicit asumption that, on average, people
         purposefully marked the review
@@ -95,8 +92,7 @@
         <br><br>
         Furthermore, one might wish to be
         careful about seperating hosts from surfers.  This is another dimension that for our purpose
-        if a needless complication; I believe we have sufficient
-        information to make a start.
+        is a needless complication.
         <br><br>
         Also, I would like to assure reader that I have scoured the terms and conditions of CouchSurfing and
         am certain our inquiry into safety is anything but a violation.  In fact, the amount of
@@ -134,8 +130,8 @@
         and calculate our posteriors from known distributions.  But we are not given this variable, but rather
         we must infer it by continuous updating based on repeated sampling within a Gibbs sampler.  Allow
         me to elaborate on the procedure outlined in Koop.<sup>2</sup>  I also hope that all that
-        follows in this section should be clear to a reader aquainted with Bayesian theory, as well
-        as those who are not - the details and forumlas are easily found in the above source.
+        follows in this section should be clear to a reader aquainted with Bayesian theory as well
+        as those who are not - the details and forumlae are easily found in my sources.
         <br><br>
         As the analysis takes place in a Bayesian framework, it follows that we should say something about
         our priors.  For a model such as ours, there is no reason to make complicating assumptions regarding
@@ -144,13 +140,13 @@
         can appreciate the metaphor of how using too strong a prior belief has the potential not only to
         influence our conclusions, but what could otherwise be wonderful experiences.
         <br><br>
-        Based on our <a href="#" data-toggle="tooltip" data-placement="bottom" title="Namely, that the
+        Based on <a href="#" data-toggle="tooltip" data-placement="bottom" title="Namely, that the
         disribution of our errors is normal and that they are independent of elements of X, and our
         prior beliefs are that &beta; is distributed
         multivariate normal
         and h is distributed Gamma.  These lead to the all the equations implicit in what follow as well
-        as my code.">standard
-        assumptions and Bayesian Theory</a>
+        as my code.">rather vanilla
+        assumptions within the Bayesian Theory</a>
         , we know the distribution for our dependent
         and continuous variable (that we don't yet know) given the the parameters, &beta;, is normal.  This
         distribution is built of two truncated halves, hence the indicator function.  When y is 1, we take
@@ -208,23 +204,20 @@
         good experiences than bad, that by building up our latent variable by using 0 as our truncation
         point we are creating a lop-sided normal distribution centered at 0.  This is not
         the case.  Indeed our y* will be normal,
-        however, it will be shifted since the bulk of the observations will be positive and correspond
+        it will simple be shifted since the bulk of the observations will be positive and correspond
         to the 1's in y.  Recall, we are drawing y*'s from a distribution centered around x<sub>i</sub>&beta;,
         not 0.  Comparing to 0 is simply a check that we have drawn a feasible new guess for y*.
         <br><br>
         There is one more detail before we are ready to implement the algorithm - identification.  There are
         infinitely many paramenter values that lead to the same model, that is, we are building up a normal
-        distribution, but there is nothing that constrains it's variance.  Without pinning this down, we can
+        distribution, but there is nothing that constrains its variance.  Without pinning this down, we can
         not say anything about our parameters.  However, we can fix h to 1, which then ensures a unique estimate
         for &beta; which serves to answer our question.
         <br><br>
-        Below is sample output with generated data based on the relationship
+        To see how things work, I first work with generated data.  Below is
+        sample output of our algorithm for 100 simulations based on the relationship
         Y = 3X + 10Z + &epsilon;.  One can also follow the link to change certain
         parameters and explore their effect on our sampler and its convergence to the posterior.
-        Note that the notation is as follows; [0,0], [10,10], 200, 100 where the first entry is our
-        prior on beta 1 and beta 2, the second is our prior on the variance, 200 represents the number
-        of iterrations to go through, and 100 how many to throw out for calculating our convergence
-        diagnostic.
       </p>
     <h3 class="paper-text"><a href="{% url 'probit_input' %}">The algorithm</a></h3>
       <p class="paper-text">
@@ -250,35 +243,54 @@
     <h3>IV. Results</h3>
       <p class="paper-text">
         Now we have our assumptions, data and the algorithm, it is time to see what can be learned about our main
-        inquiry - how can we increase the probability of having a good interaction with those we met online.
-
-
-
-
-
+        inquiry - how can we increase the probability of having a good interaction with those we meet online.  The
+        following links are analagous to the preceding two, but run using the actual data.  One must be careful
+        in interpreting the values of our betas as we are working with a probit model.  But the sign can be
+        relied on.  For example, we see that most of the density on beta 4, a dummy for males, is around -0.2,
+        and we can conclude that being male increases the chances of seeing a negative experience on that profile, we
+        just can't say by how much without more calculations.
+      </p>
+      <h3 class="paper-text"><a href="{% url 'actual' %}">The algorithm and results from our data</a></h3>
+      <br>
+      <p class="paper-text">
         As before, one may take a look how our priors have power to skew the results.  I found that my results are
         data driven and the prior does not influence things dramatically, or put another way, the results
-        are robust.
+        are robust.  This is because there are over a thousand observations, as compared to the 100 observations
+        I use in the generated data to speed things up.
       </p>
-    <h3 class="paper-text"><a href="{% url 'sensitivity_actual' %}">Sensitivity analysis</a></h3>
-    <br>
-    <p class="paper-text">
-    </p>
-    <h3 class="paper-text"><a href="{% url 'actual' %}">The algorithm and results from our data</a></h3>
+      <h3 class="paper-text"><a href="{% url 'sensitivity_actual' %}">Sensitivity analysis</a></h3>
+      <p class="paper-text">
+        Above, we see that age, profile length, how long a user has been a member and male all are related
+        negatively with having a good experience.  To be truely precise, one could compare a fictitious
+        profile with another and using associated data for those two, and betas above, one could arrive
+        at a y* value.  Recall that positive y*'s are for those users with only good experiences.  In
+        this way, we can construct a more interpretable way to analyze marginal effects.  However, I have
+        elected to forgo this step as I hope no one would seriously use this model - it is not yet close
+        to a substitute for intuition.
+      </p>
 </div>
 
 <div class="paper-section">
     <h3>V. Conclusions</h3>
       <h4></h4>
         <p class="paper-text">
-          I would like to take this opportunity to say that these results are
-
-
-
+          I would like to take this opportunity to say that these results are at best motivation to look
+          deeper.  That is, the negative coeffecients on age, and how long a user has been a member seems deceptive.
+          I suspect it is not that the elderly or long-time couchsurfers are particularly pernicious, but that
+          this simply reflects the fact that they, in their career, have inevitably come into contact with
+          some of the stranger dwellers of this planet (this suggest including squared terms).  I am a bit puzzled
+           why those with longer profiles are
+          to be suspected according to our model, maybe this is a sign of craziness when one is too eager to
+          describe oneself.  Or maybe there is something else going on here.  And finally, perhaps men are not
+          as problematic online as stereotypes would have it, but that they are more willing to write an
+          honest review, that is, to say, 'look, we didn't get along'.  There are many other stories that
+          could explain what is going on.  The bottom line is, while our estimates are significant, they should not
+          be compelling enough to act on.  But we have learned that there is information in such data, and
+          with a little more effect, this information could become a more convincing model.
         </p>
       <h4 class="paper-text">Future research?</h4>
         <p class="paper-text">
-          These results should be criticised for multiple reasons and this leaves many options open
+          These results leave many options open
           for future inquiry.  The model itself is too simple, for
           example, I am certain that we are concluding that people who have been members longer are more likely
           to have had a negative experience simply because they have been such active contributers to
@@ -287,12 +299,10 @@
           simple; one would need to collect much more, and take into account other variables to get a true
           picture.  I would even recommend to collect the text and analyze it using a bag of words model.  I
           have been waiting to point out as well, that CouchSurfing has such a good reputation because it, more than
-          and other services I would argue, is based on a community.  Tinder, for example, doesn't have the same 
+          and other services I would argue, is based on a community.  Tinder, for example, doesn't have the same
           sort of structure that allows people to so fully develop their profile.  Clearly, there
           are many directions one could go in and dramatically increase the power of the results.
-
         </p>
-
 </div>
 
 <div class="paper-section">

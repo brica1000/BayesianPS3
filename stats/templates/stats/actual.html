@@ -2,7 +2,7 @@
 {% block content %}
 
 <div>
-  <h1>Sensitivity Analysis</h1>
+  <h1>Results and algorithm</h1>
   <form method="POST" class="form-horizontal">
     {% csrf_token %}
     <div id="fixed">
@@ -16,7 +16,7 @@
       </ul>
     </div>
     <div class="form-group" id="actual-text">
-        <p >The first 5 numbers are the priors
+        <p>Everything is as before, only now we have a few more variables.  The first 5 numbers are the priors
           on each value for beta corresponding to the above order.  The next collection of 5 are the prior
           beliefs on the variance of these betas, the penulitmate number is the number of iterations to go
           through and the final parameter is the number to burn.

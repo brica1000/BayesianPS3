@@ -2,8 +2,24 @@
 {% block content %}
 
 <div>
-    <h1>Convergence</h1>
-    <p>
+    <h1>Basic results</h1>
+    <p>Below is output from my generated data.  Recall Y = 3X + 10Z + &epsilon;, and below, beta 0 refers to our
+      coeffecient on our X term and 10 to one on Z.  I ran the algorithm with priors of [-3,15] and variances of
+      [200,200].  Right away, one can see how these priors are influencing our results.
+      One can see from the autocorrelation plot for beta 0 (I omitted the plot for beta 1, it looks
+      similar) that our algorithm is converging.  The program automatically will calculate a convergence diagnostic
+      for the alpha=.1 - basically, is the mean of a subset of the series of betas the same (in statistical terms) as the mean
+      from another subset.  Throwing out the first 5000, this seems to be true, and indeed it was, although we
+      should continue with the algorithm for many more repititions to converge at a lower alpha.  Also, one may
+      see the distribution of betas, this is the main item if interest and we see that most of the probabilty
+      weight is around the true values.
+      <br><br>
+      One may try to change the inputs and see how the algorithm behaves.  Using the presets
+      we have quite nice behavior, but this isn't a given if we change things.  Note that
+       the notation/syntax is as follows; [0,0], [10,10], 200, 100 where the first entry is our
+      prior on beta 1 and beta 2, the second is our prior on the variance, 200 represents the number
+      of iterations to go through, and 100 how many to throw out for calculating our convergence
+      diagnostic and posterior sampling.  Also, change only the numbers, anything else will create problems.
     </p>
     <form method="POST" class="form-horizontal">
       {% csrf_token %}
